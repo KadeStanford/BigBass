@@ -253,6 +253,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  /* ── FAQ Accordion ── */
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isActive = item.classList.contains('active');
+
+      // Close all other items
+      document.querySelectorAll('.faq-item.active').forEach(open => {
+        if (open !== item) {
+          open.classList.remove('active');
+          open.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Toggle current item
+      item.classList.toggle('active', !isActive);
+      btn.setAttribute('aria-expanded', !isActive);
+    });
+  });
+
+
   /* ── Scroll Progress Bar ── */
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress';
