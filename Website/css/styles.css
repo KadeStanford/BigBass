@@ -1562,6 +1562,17 @@ ul {
     border-bottom: none;
   }
 
+  .nav-menu .nav-admin {
+    padding: 14px 0 !important;
+    width: 100%;
+    opacity: 0.5;
+    border-bottom: none;
+  }
+
+  .nav-menu .nav-admin:hover {
+    opacity: 1;
+  }
+
   .nav-toggle.open span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
