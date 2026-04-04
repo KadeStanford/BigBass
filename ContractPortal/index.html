@@ -1,0 +1,1661 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Big Bass Tree Services, LLC — Contract Portal</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="main-header">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="24" cy="24" r="22" fill="#1B6B3A" />
+              <path d="M24 8 L30 18 H18 Z" fill="#fff" />
+              <path d="M24 14 L32 26 H16 Z" fill="#fff" />
+              <path d="M24 20 L34 34 H14 Z" fill="#fff" />
+              <rect x="22" y="32" width="4" height="8" rx="1" fill="#8B5E3C" />
+            </svg>
+          </div>
+          <div class="logo-text">
+            <h1>Big Bass Tree Services</h1>
+            <span>Contract Portal</span>
+          </div>
+        </div>
+        <div class="header-contact">
+          <span>1726 Lyman Lane, Clinton, LA 70722</span>
+        </div>
+        <div class="header-auth">
+          <button
+            type="button"
+            class="btn-header-login"
+            id="headerLoginBtn"
+            onclick="openLoginModal()"
+          >
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+              <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H3z" />
+            </svg>
+            Admin
+          </button>
+          <div class="header-user" id="headerUserDisplay" style="display: none">
+            <span class="header-user-name" id="headerUserName"></span>
+            <button
+              type="button"
+              class="btn-header-icon"
+              id="adminPanelToggle"
+              onclick="toggleAdminPanel()"
+              title="Settings"
+              style="display: none"
+            >
+              <svg
+                viewBox="0 0 20 20"
+                width="16"
+                height="16"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="btn-header-icon"
+              onclick="handleLogout()"
+              title="Sign out"
+            >
+              <svg
+                viewBox="0 0 20 20"
+                width="16"
+                height="16"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h5a1 1 0 100-2H4V5h4a1 1 0 100-2H3zm11.707 3.293a1 1 0 010 1.414L13.414 9H17a1 1 0 110 2h-3.586l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== AUTH GATE (shown when not logged in) ===== -->
+    <div class="auth-gate" id="portalAuthGate" style="display:flex">
+      <div class="auth-gate-card">
+        <div class="login-logo">
+          <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
+            <circle cx="24" cy="24" r="22" fill="#1B6B3A" />
+            <path d="M24 8 L30 18 H18 Z" fill="#fff" />
+            <path d="M24 14 L32 26 H16 Z" fill="#fff" />
+            <path d="M24 20 L34 34 H14 Z" fill="#fff" />
+            <rect x="22" y="32" width="4" height="8" rx="1" fill="#8B5E3C" />
+          </svg>
+        </div>
+        <h2>Contract Portal</h2>
+        <p>Sign in to access the Big Bass Tree Services contract portal.</p>
+        <button type="button" class="btn btn-primary" onclick="openLoginModal()">Sign In</button>
+      </div>
+    </div>
+
+    <!-- ===== PROGRESS BAR ===== -->
+    <div class="progress-bar" id="progressBar" style="display:none">
+      <div class="progress-track">
+        <div class="progress-step active" data-step="1">
+          <div class="step-dot">1</div>
+          <span>Select Contract</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <div class="step-dot">2</div>
+          <span>Customer Info</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+          <div class="step-dot">3</div>
+          <span>Rate Schedule</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="4">
+          <div class="step-dot">4</div>
+          <span>Review & Sign</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="5">
+          <div class="step-dot">5</div>
+          <span>Complete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" style="display:none">
+      <!-- STEP 1: Select Contract Type -->
+      <section class="step-panel active" id="step1">
+        <div class="step-header">
+          <h2>Select Your Contract Type</h2>
+          <p>Choose the contract that applies to your service agreement.</p>
+        </div>
+        <div class="contract-cards contract-cards-3">
+          <div
+            class="contract-card"
+            data-type="insurance"
+            onclick="selectContract('insurance')"
+          >
+            <div class="card-icon">
+              <svg viewBox="0 0 64 64" fill="none">
+                <rect
+                  x="8"
+                  y="4"
+                  width="48"
+                  height="56"
+                  rx="4"
+                  fill="#E8F5E9"
+                  stroke="#1B6B3A"
+                  stroke-width="2"
+                />
+                <path
+                  d="M20 20h24M20 28h24M20 36h16"
+                  stroke="#1B6B3A"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <circle cx="44" cy="44" r="12" fill="#1565C0" />
+                <path
+                  d="M40 44h8M44 40v8"
+                  stroke="#fff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h3>Insurance Services Contract</h3>
+            <p>
+              For customers filing through their insurance carrier. Includes
+              insurance claim details, adjuster information, and assignment of
+              benefits.
+            </p>
+            <ul class="card-features">
+              <li>Insurance carrier & claim details</li>
+              <li>Adjuster contact information</li>
+              <li>Date & cause of loss</li>
+              <li>Scope of services & pricing</li>
+              <li>Equipment rate schedule</li>
+            </ul>
+            <button class="btn btn-primary">Select This Contract</button>
+          </div>
+          <div
+            class="contract-card"
+            data-type="general"
+            onclick="selectContract('general')"
+          >
+            <div class="card-icon">
+              <svg viewBox="0 0 64 64" fill="none">
+                <rect
+                  x="8"
+                  y="4"
+                  width="48"
+                  height="56"
+                  rx="4"
+                  fill="#E3F2FD"
+                  stroke="#1565C0"
+                  stroke-width="2"
+                />
+                <path
+                  d="M20 20h24M20 28h24M20 36h16"
+                  stroke="#1565C0"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M36 44 L42 50 L52 38"
+                  stroke="#1B6B3A"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <h3>General Services Contract</h3>
+            <p>
+              Standard service agreement for direct-pay customers. A formal
+              binding agreement between owner and customer for tree services.
+            </p>
+            <ul class="card-features">
+              <li>Formal binding agreement</li>
+              <li>Customer information</li>
+              <li>Service scope & terms</li>
+              <li>Equipment rate schedule</li>
+              <li>Performance timeframe</li>
+            </ul>
+            <button class="btn btn-primary">Select This Contract</button>
+          </div>
+          <div
+            class="contract-card"
+            data-type="invoice"
+            onclick="openInvoiceCreator()"
+          >
+            <div class="card-icon">
+              <svg viewBox="0 0 64 64" fill="none">
+                <rect
+                  x="10"
+                  y="6"
+                  width="44"
+                  height="52"
+                  rx="4"
+                  fill="#E8F5E9"
+                  stroke="#1B6B3A"
+                  stroke-width="2"
+                />
+                <path
+                  d="M20 18h24"
+                  stroke="#1B6B3A"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 26h18"
+                  stroke="#1B6B3A"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 32h14"
+                  stroke="#1B6B3A"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 38h10"
+                  stroke="#1B6B3A"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <rect
+                  x="32"
+                  y="42"
+                  width="14"
+                  height="10"
+                  rx="2"
+                  fill="#1565C0"
+                />
+                <path
+                  d="M36 47h6"
+                  stroke="#fff"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M36 50h4"
+                  stroke="#fff"
+                  stroke-width="1"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h3>Invoice Creator</h3>
+            <p>
+              Generate professional invoices for completed or scheduled tree
+              service work. Create, preview, and download PDF invoices instantly.
+            </p>
+            <ul class="card-features">
+              <li>Custom line items & pricing</li>
+              <li>Preset service catalog</li>
+              <li>Automatic tax calculation</li>
+              <li>Professional PDF download</li>
+              <li>Payment terms & due dates</li>
+            </ul>
+            <button class="btn btn-primary">Create Invoice</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Customer Information -->
+      <section class="step-panel" id="step2">
+        <div class="step-header">
+          <h2>Customer Information</h2>
+          <p>Please fill in all required fields below.</p>
+        </div>
+        <form id="customerForm" class="form-grid" novalidate>
+          <!-- Common fields -->
+          <div class="form-section">
+            <h3 class="form-section-title">Contact Details</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customerName"
+                  >Customer's Name <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="customerName"
+                  required
+                  placeholder="Full legal name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber"
+                  >Phone Number <span class="required">*</span></label
+                >
+                <input
+                  type="tel"
+                  id="phoneNumber"
+                  required
+                  placeholder="(555) 555-5555"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="customerAddress"
+                  >Customer's Address <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="customerAddress"
+                  required
+                  placeholder="Full mailing address"
+                />
+              </div>
+              <div class="form-group">
+                <label for="emailAddress"
+                  >E-Mail Address <span class="required">*</span></label
+                >
+                <input
+                  type="email"
+                  id="emailAddress"
+                  required
+                  placeholder="email@example.com"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="locationOfServices"
+                  >Location of Services <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="locationOfServices"
+                  required
+                  placeholder="Address where services will be performed"
+                />
+                <label class="same-address-toggle">
+                  <input type="checkbox" id="sameAsAddress" />
+                  <span>Same as customer address</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="estimatedTimeframe"
+                  >Estimated Performance Timeframe</label
+                >
+                <select id="estimatedTimeframe">
+                  <option value="">Select timeframe...</option>
+                  <option value="1 business day">1 business day</option>
+                  <option value="2-3 business days">2-3 business days</option>
+                  <option value="3-5 business days">3-5 business days</option>
+                  <option value="1-2 weeks">1-2 weeks</option>
+                  <option value="2-4 weeks">2-4 weeks</option>
+                  <option value="To be determined">To be determined</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- General contract date fields -->
+          <div
+            class="form-section"
+            id="generalDateSection"
+            style="display: none"
+          >
+            <h3 class="form-section-title">
+              Agreement Date
+              <span class="auto-badge">Auto-filled with today's date</span>
+            </h3>
+            <div class="form-row form-row-thirds">
+              <div class="form-group">
+                <label for="agreementDay"
+                  >Day <span class="required">*</span></label
+                >
+                <input
+                  type="number"
+                  id="agreementDay"
+                  min="1"
+                  max="31"
+                  placeholder="DD"
+                />
+              </div>
+              <div class="form-group">
+                <label for="agreementMonth"
+                  >Month <span class="required">*</span></label
+                >
+                <select id="agreementMonth">
+                  <option value="">Select month...</option>
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                  <option>April</option>
+                  <option>May</option>
+                  <option>June</option>
+                  <option>July</option>
+                  <option>August</option>
+                  <option>September</option>
+                  <option>October</option>
+                  <option>November</option>
+                  <option>December</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="agreementYear"
+                  >Year <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="agreementYear"
+                  placeholder="202_"
+                  maxlength="4"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Insurance-specific fields -->
+          <div class="form-section" id="insuranceSection" style="display: none">
+            <h3 class="form-section-title">Insurance Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dateOfLoss"
+                  >Date of Loss <span class="required">*</span>
+                  <span class="auto-badge">Defaults to today</span></label
+                >
+                <input type="date" id="dateOfLoss" required />
+              </div>
+              <div class="form-group">
+                <label for="causeOfLoss"
+                  >Cause of Loss <span class="required">*</span></label
+                >
+                <select id="causeOfLoss" required>
+                  <option value="">Select cause...</option>
+                  <option value="Hurricane">Hurricane</option>
+                  <option value="Tropical Storm">Tropical Storm</option>
+                  <option value="Tornado">Tornado</option>
+                  <option value="Severe Thunderstorm">
+                    Severe Thunderstorm
+                  </option>
+                  <option value="Ice Storm">Ice Storm</option>
+                  <option value="Wind Damage">Wind Damage</option>
+                  <option value="Lightning">Lightning</option>
+                  <option value="Flooding">Flooding</option>
+                  <option value="Fallen Tree">Fallen Tree</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="insuranceCarrier"
+                  >Insurance Carrier <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="insuranceCarrier"
+                  required
+                  placeholder="Insurance company name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="policyNumber"
+                  >Policy Number <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="policyNumber"
+                  required
+                  placeholder="Policy #"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="claimNumber"
+                  >Claim Number <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="claimNumber"
+                  required
+                  placeholder="Claim #"
+                />
+              </div>
+              <div class="form-group">
+                <label for="adjusterName"
+                  >Adjuster's Name <span class="required">*</span></label
+                >
+                <input
+                  type="text"
+                  id="adjusterName"
+                  required
+                  placeholder="Adjuster full name"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="adjusterPhone">Adjuster's Phone Number</label>
+                <input
+                  type="tel"
+                  id="adjusterPhone"
+                  placeholder="(555) 555-5555"
+                />
+              </div>
+              <div class="form-group">
+                <label for="adjusterEmail">Adjuster's E-mail Address</label>
+                <input
+                  type="email"
+                  id="adjusterEmail"
+                  placeholder="adjuster@insurance.com"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Insurance scope fields -->
+          <div
+            class="form-section"
+            id="insuranceScopeSection"
+            style="display: none"
+          >
+            <h3 class="form-section-title">Scope & Pricing</h3>
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label for="scopeOfServices"
+                  >Scope of Services <span class="required">*</span></label
+                >
+                <textarea
+                  id="scopeOfServices"
+                  rows="3"
+                  required
+                  placeholder="Describe the services to be performed..."
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group full-width">
+                <label for="additionalServices"
+                  >Additional Services / Information</label
+                >
+                <textarea
+                  id="additionalServices"
+                  rows="2"
+                  placeholder="Any additional services or notes..."
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contractPrice"
+                  >Price <span class="required">*</span></label
+                >
+                <div class="price-input form-price-input">
+                  <span class="currency">$</span>
+                  <input
+                    type="text"
+                    id="contractPrice"
+                    required
+                    placeholder="0.00"
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="equipmentRequired">Equipment Required</label>
+                <input
+                  type="text"
+                  id="equipmentRequired"
+                  placeholder="List equipment needed"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="goToStep(1)"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="validateAndNext(2)"
+            >
+              Continue to Rate Schedule
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3: Rate Schedule -->
+      <section class="step-panel" id="step3">
+        <div class="step-header">
+          <h2>Rate Schedule</h2>
+          <p>
+            Select applicable equipment and services, then enter the rates. All
+            rates are an eight (8) hour minimum. Normal working hours are 9:00
+            AM to 5:00 PM.
+          </p>
+        </div>
+        <div class="rate-schedule">
+          <div class="rate-item" data-item="1">
+            <div class="rate-check">
+              <input type="checkbox" id="rate1" onchange="toggleRate(1)" />
+              <label for="rate1"></label>
+            </div>
+            <div class="rate-info">
+              <h4>135 Ton Knuckle Boom Crane with Grapple Saw</h4>
+              <p>
+                Crane is used to reach long distances and remove material that
+                would not be safe for workers to enter. Price includes operator.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate1Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="2">
+            <div class="rate-check">
+              <input type="checkbox" id="rate2" onchange="toggleRate(2)" />
+              <label for="rate2"></label>
+            </div>
+            <div class="rate-info">
+              <h4>50 Ton Telescopic Truck Crane</h4>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate2Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="3">
+            <div class="rate-check">
+              <input type="checkbox" id="rate3" onchange="toggleRate(3)" />
+              <label for="rate3"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Skid Steer</h4>
+              <p>
+                Used to move material to allow safe work areas for the crew.
+                Also allows removal of material from the crane landing zone.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate3Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="4">
+            <div class="rate-check">
+              <input type="checkbox" id="rate4" onchange="toggleRate(4)" />
+              <label for="rate4"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Stump Grinder</h4>
+              <p>
+                Machine is key in removing roots that are still attached to root
+                balls. Roots must be cut to allow the grapple crane to lift the
+                stump.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate4Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="5">
+            <div class="rate-check">
+              <input type="checkbox" id="rate5" onchange="toggleRate(5)" />
+              <label for="rate5"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Aerial Lift / Bucket Truck</h4>
+              <p>
+                Lift is used to hoist personnel. It is much safer than
+                traditional climbing methods.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate5Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="6">
+            <div class="rate-check">
+              <input type="checkbox" id="rate6" onchange="toggleRate(6)" />
+              <label for="rate6"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Labor Per Person</h4>
+              <p>
+                Includes spotters, riggers, sawyers, lift operators, skid steer
+                operators, stump grinder operators.
+              </p>
+            </div>
+            <div class="rate-price rate-price-labor">
+              <div>
+                <label>Number of People</label>
+                <input
+                  type="number"
+                  id="rate6Qty"
+                  disabled
+                  placeholder="#"
+                  min="1"
+                  class="qty-input"
+                />
+              </div>
+              <div>
+                <label>Price</label>
+                <div class="price-input">
+                  <span class="currency">$</span>
+                  <input
+                    type="number"
+                    id="rate6Price"
+                    disabled
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="7">
+            <div class="rate-check">
+              <input type="checkbox" id="rate7" onchange="toggleRate(7)" />
+              <label for="rate7"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Ground Protection Mats</h4>
+              <p>
+                Mats used to allow ingress and egress of heavy equipment and to
+                mitigate further loss of property.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate7Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="8">
+            <div class="rate-check">
+              <input type="checkbox" id="rate8" onchange="toggleRate(8)" />
+              <label for="rate8"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Tarps</h4>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate8Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="9">
+            <div class="rate-check">
+              <input type="checkbox" id="rate9" onchange="toggleRate(9)" />
+              <label for="rate9"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Debris Hauling</h4>
+              <p>
+                20% of all equipment and labor. Covers material removed from the
+                curb to an approved disposal location.
+              </p>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate9Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="10">
+            <div class="rate-check">
+              <input type="checkbox" id="rate10" onchange="toggleRate(10)" />
+              <label for="rate10"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Travel</h4>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate10Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-item" data-item="11">
+            <div class="rate-check">
+              <input type="checkbox" id="rate11" onchange="toggleRate(11)" />
+              <label for="rate11"></label>
+            </div>
+            <div class="rate-info">
+              <h4>Other</h4>
+            </div>
+            <div class="rate-price">
+              <label>Price</label>
+              <div class="price-input">
+                <span class="currency">$</span>
+                <input
+                  type="number"
+                  id="rate11Price"
+                  disabled
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rate-total">
+            <span>Total:</span>
+            <span id="rateTotal">$0.00</span>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="goToStep(2)">
+            Back
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="validateAndNext(3)"
+          >
+            Continue to Review & Sign
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 4: Review & Sign -->
+      <section class="step-panel" id="step4">
+        <div class="step-header">
+          <h2>Review & Sign Contract</h2>
+          <p>
+            Please review the full contract below, then provide your initials
+            and signature where indicated.
+          </p>
+        </div>
+        <div class="contract-document" id="contractDocument">
+          <!-- Contract content will be rendered here by JS -->
+        </div>
+
+        <div class="signature-section">
+          <div class="signature-block">
+            <h3>Right to Cancel — Initial Here</h3>
+            <p>
+              By initialing below, you acknowledge the three day right to cancel
+              as set forth in La. R.S. 9:3538 (E).
+            </p>
+            <div class="signature-pad-wrapper">
+              <canvas
+                id="initialPad"
+                class="signature-canvas initial-canvas"
+              ></canvas>
+              <div class="signature-pad-actions">
+                <button
+                  type="button"
+                  class="btn-clear"
+                  onclick="clearPad('initial')"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  class="btn-fullscreen"
+                  onclick="openFullscreenSign('initial')"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                    <path
+                      d="M4 14h2v4h4v2H4v-6zm16-4h-2V6h-4V4h6v6zM4 10h2V6h4V4H4v6zm12 10h4v-6h-2v4h-4v2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fullscreen
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="signature-block">
+            <h3>Customer Signature</h3>
+            <p>
+              By signing below, you agree to the scope of work and the terms set
+              forth in this contract.
+            </p>
+            <div class="signature-pad-wrapper">
+              <canvas id="signaturePad" class="signature-canvas"></canvas>
+              <div class="signature-pad-actions">
+                <button
+                  type="button"
+                  class="btn-clear"
+                  onclick="clearPad('signature')"
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  class="btn-fullscreen"
+                  onclick="openFullscreenSign('signature')"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                    <path
+                      d="M4 14h2v4h4v2H4v-6zm16-4h-2V6h-4V4h6v6zM4 10h2V6h4V4H4v6zm12 10h4v-6h-2v4h-4v2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fullscreen
+                </button>
+              </div>
+            </div>
+            <div class="form-group signature-date">
+              <label for="signatureDate">Date</label>
+              <input type="date" id="signatureDate" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="goToStep(3)">
+            Back
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sign"
+            onclick="submitContract()"
+          >
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <path
+                d="M9 12l2 2 4-4"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+            Submit Signed Contract
+          </button>
+        </div>
+      </section>
+
+      <!-- STEP 5: Complete -->
+      <section class="step-panel" id="step5">
+        <div class="completion-screen">
+          <div class="completion-icon">
+            <svg viewBox="0 0 80 80" fill="none">
+              <circle
+                cx="40"
+                cy="40"
+                r="38"
+                fill="#E8F5E9"
+                stroke="#1B6B3A"
+                stroke-width="3"
+              />
+              <path
+                d="M24 40 L34 50 L56 28"
+                stroke="#1B6B3A"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <h2>Contract Submitted Successfully!</h2>
+          <p>
+            Your signed contract has been submitted. You can download a copy for
+            your records below.
+          </p>
+          <div class="completion-actions">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="downloadPDF()"
+            >
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path
+                  d="M12 5v14M5 12l7 7 7-7"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Download PDF
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="startOver()"
+            >
+              Start New Contract
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== INVOICE PANEL ===== -->
+    <section class="step-panel invoice-panel-section" id="invoicePanel">
+      <div class="main-content">
+        <div class="invoice-header-bar">
+          <div>
+            <h2>Invoice Creator</h2>
+            <p>Create professional invoices for your tree service work.</p>
+          </div>
+          <button type="button" class="btn btn-secondary" onclick="closeInvoiceCreator()">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            Back to Portal
+          </button>
+        </div>
+
+        <div class="invoice-builder">
+          <!-- Invoice Details -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" style="vertical-align:-2px;color:var(--green-700);">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/>
+              </svg>
+              Invoice Details
+            </h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invoiceNumber">Invoice Number <span class="required">*</span></label>
+                <input type="text" id="invoiceNumber" placeholder="INV-202603-0001" />
+              </div>
+              <div class="form-group">
+                <label for="invoiceDate">Invoice Date <span class="required">*</span></label>
+                <input type="date" id="invoiceDate" onchange="updateDueDate()" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invoiceTerms">Payment Terms</label>
+                <select id="invoiceTerms" onchange="updateDueDate()">
+                  <option value="due-on-receipt">Due on Receipt</option>
+                  <option value="net-10">Net 10</option>
+                  <option value="net-15">Net 15</option>
+                  <option value="net-30" selected>Net 30</option>
+                  <option value="net-60">Net 60</option>
+                  <option value="custom">Custom</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="invoiceDueDate">Due Date</label>
+                <input type="date" id="invoiceDueDate" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invPONumber">PO / Reference Number</label>
+                <input type="text" id="invPONumber" placeholder="Optional" />
+              </div>
+              <div class="form-group">
+                <label for="invJobLocation">Job Location</label>
+                <input type="text" id="invJobLocation" placeholder="Address where work was performed" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Information -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" style="vertical-align:-2px;color:var(--green-700);">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+              </svg>
+              Customer Information
+            </h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invCustomerName">Customer Name <span class="required">*</span></label>
+                <input type="text" id="invCustomerName" placeholder="Full name or business name" />
+              </div>
+              <div class="form-group">
+                <label for="invCustomerPhone">Phone Number</label>
+                <input type="tel" id="invCustomerPhone" placeholder="(555) 555-5555" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invCustomerAddress">Address</label>
+                <input type="text" id="invCustomerAddress" placeholder="Full mailing address" />
+              </div>
+              <div class="form-group">
+                <label for="invCustomerEmail">Email Address</label>
+                <input type="email" id="invCustomerEmail" placeholder="email@example.com" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Line Items -->
+          <div class="form-section invoice-line-items-section">
+            <div class="invoice-line-header">
+              <h3 class="form-section-title" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">
+                <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" style="vertical-align:-2px;color:var(--green-700);">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                  <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                </svg>
+                Line Items
+              </h3>
+              <div class="invoice-line-actions-top">
+                <select id="presetServiceSelect" class="preset-select" onchange="addPresetService()">
+                  <option value="">+ Add preset service...</option>
+                  <option disabled>──────────────</option>
+                  <option value="135 Ton Knuckle Boom Crane with Grapple Saw">135 Ton Knuckle Boom Crane</option>
+                  <option value="50 Ton Telescopic Truck Crane">50 Ton Telescopic Truck Crane</option>
+                  <option value="Skid Steer">Skid Steer</option>
+                  <option value="Stump Grinder">Stump Grinder</option>
+                  <option value="Aerial Lift / Bucket Truck">Aerial Lift / Bucket Truck</option>
+                  <option value="Labor Per Person">Labor Per Person</option>
+                  <option value="Ground Protection Mats">Ground Protection Mats</option>
+                  <option value="Tarps">Tarps</option>
+                  <option value="Debris Hauling">Debris Hauling</option>
+                  <option value="Travel">Travel</option>
+                  <option disabled>──────────────</option>
+                  <option value="Tree Removal">Tree Removal</option>
+                  <option value="Tree Trimming / Pruning">Tree Trimming / Pruning</option>
+                  <option value="Emergency Services">Emergency Services</option>
+                  <option value="Lot Clearing">Lot Clearing</option>
+                  <option value="Storm Damage Cleanup">Storm Damage Cleanup</option>
+                </select>
+              </div>
+            </div>
+            <div class="invoice-table-wrapper">
+              <table class="invoice-line-table">
+                <thead>
+                  <tr>
+                    <th class="line-num-th">#</th>
+                    <th class="line-desc-th">Description</th>
+                    <th class="line-qty-th">Qty</th>
+                    <th class="line-rate-th">Rate</th>
+                    <th class="line-amount-th">Amount</th>
+                    <th class="line-actions-th"></th>
+                  </tr>
+                </thead>
+                <tbody id="invoiceLineItemsBody">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div class="invoice-line-footer">
+              <button type="button" class="btn btn-secondary btn-add-line" onclick="addInvoiceLineItem()">
+                <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
+                </svg>
+                Add Line Item
+              </button>
+              <div class="invoice-totals">
+                <div class="invoice-totals-row">
+                  <span>Subtotal</span>
+                  <span id="invoiceSubtotal">$0.00</span>
+                </div>
+                <div class="invoice-totals-row invoice-tax-row">
+                  <span>
+                    Tax
+                    <input type="number" id="invoiceTaxRate" value="0" min="0" max="100" step="0.25" class="tax-rate-input" oninput="calculateInvoiceTotal()" />
+                    <span class="tax-pct">%</span>
+                  </span>
+                  <span id="invoiceTaxAmount">$0.00</span>
+                </div>
+                <div class="invoice-totals-row invoice-total-row">
+                  <span>Total</span>
+                  <span id="invoiceTotal">$0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="form-section">
+            <h3 class="form-section-title">
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" style="vertical-align:-2px;color:var(--green-700);">
+                <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd"/>
+              </svg>
+              Notes &amp; Terms
+            </h3>
+            <div class="form-group full-width">
+              <label for="invoiceNotes">Notes / Additional Terms</label>
+              <textarea id="invoiceNotes" rows="3" placeholder="Payment instructions, special terms, job notes..."></textarea>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="invoice-action-bar">
+            <button type="button" class="btn btn-secondary" onclick="clearInvoice()">
+              Clear Invoice
+            </button>
+            <div class="invoice-action-right">
+              <button type="button" class="btn btn-secondary" onclick="previewAndDownloadInvoice()">
+                <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                </svg>
+                Preview Invoice
+              </button>
+              <button type="button" class="btn btn-primary btn-sign" onclick="if(validateInvoice()) downloadInvoicePDF()">
+                <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                  <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Download PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Invoice Preview Modal -->
+    <div class="fullscreen-sign-overlay" id="invoicePreviewOverlay">
+      <div class="invoice-preview-modal">
+        <div class="fullscreen-sign-header">
+          <h3>Invoice Preview</h3>
+          <div class="fullscreen-sign-actions">
+            <button type="button" class="btn btn-primary" onclick="downloadInvoiceFromPreview()">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download PDF
+            </button>
+            <button type="button" class="btn-close-fullscreen" onclick="closeInvoicePreview()" aria-label="Close">
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="invoice-preview-body" id="invoicePreviewContent">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Datalist for service descriptions -->
+    <datalist id="servicePresets">
+      <option value="135 Ton Knuckle Boom Crane with Grapple Saw">
+      <option value="50 Ton Telescopic Truck Crane">
+      <option value="Skid Steer">
+      <option value="Stump Grinder">
+      <option value="Aerial Lift / Bucket Truck">
+      <option value="Labor Per Person">
+      <option value="Ground Protection Mats">
+      <option value="Tarps">
+      <option value="Debris Hauling">
+      <option value="Travel">
+      <option value="Tree Removal">
+      <option value="Tree Trimming / Pruning">
+      <option value="Emergency Services">
+      <option value="Lot Clearing">
+      <option value="Storm Damage Cleanup">
+    </datalist>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="main-footer">
+      <p>
+        &copy; 2026 Big Bass Tree Services, LLC. All rights reserved. | Licensed
+        Louisiana Arborist #2687
+      </p>
+    </footer>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Fullscreen Signature Modal -->
+    <div class="fullscreen-sign-overlay" id="fullscreenSignOverlay">
+      <div class="fullscreen-sign-modal">
+        <div class="fullscreen-sign-header">
+          <h3 id="fullscreenSignTitle">Sign Here</h3>
+          <div class="fullscreen-sign-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="clearFullscreenPad()"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="confirmFullscreenSign()"
+            >
+              Done
+            </button>
+            <button
+              type="button"
+              class="btn-close-fullscreen"
+              onclick="closeFullscreenSign()"
+              aria-label="Close"
+            >
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="fullscreen-sign-body">
+          <canvas
+            id="fullscreenSignCanvas"
+            class="fullscreen-sign-canvas"
+          ></canvas>
+          <p class="fullscreen-sign-hint">
+            Use your finger or stylus to sign above
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restore Saved Data Prompt -->
+    <div class="restore-prompt-overlay" id="restorePromptOverlay">
+      <div class="restore-prompt-modal">
+        <div class="restore-prompt-icon">
+          <svg viewBox="0 0 48 48" width="48" height="48" fill="none">
+            <circle
+              cx="24"
+              cy="24"
+              r="22"
+              fill="#E8F5E9"
+              stroke="#1B6B3A"
+              stroke-width="2"
+            />
+            <path
+              d="M16 24l6 6 10-12"
+              stroke="#1B6B3A"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <h3>Unsaved Contract Found</h3>
+        <p id="restorePromptDetails"></p>
+        <p class="restore-prompt-sub">
+          Would you like to continue where you left off?
+        </p>
+        <div class="restore-prompt-actions">
+          <button type="button" class="btn btn-secondary" id="restorePromptNew">
+            Start New
+          </button>
+          <button type="button" class="btn btn-primary" id="restorePromptLoad">
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Settings Panel -->
+    <aside class="admin-panel" id="adminPanel">
+      <div class="admin-panel-header">
+        <h3>
+          <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Admin Settings
+        </h3>
+        <button
+          type="button"
+          class="btn-close-admin"
+          onclick="closeAdminPanel()"
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M18 6L6 18M6 6l12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+      <form onsubmit="saveAdminSettings(event)" class="admin-panel-body">
+        <div class="admin-field">
+          <label for="settingCompanyEmail">Company Email</label>
+          <p class="admin-field-hint">
+            Submitted contracts will be sent to this address.
+          </p>
+          <input
+            type="email"
+            id="settingCompanyEmail"
+            placeholder="office@bigbasstree.com"
+          />
+        </div>
+        <div class="admin-field">
+          <label for="settingCompanyName">Company Name</label>
+          <input
+            type="text"
+            id="settingCompanyName"
+            value="Big Bass Tree Services, LLC"
+          />
+        </div>
+        <div class="admin-field">
+          <label for="settingCompanyPhone">Company Phone</label>
+          <input
+            type="tel"
+            id="settingCompanyPhone"
+            placeholder="(225) 555-1234"
+          />
+        </div>
+        <div class="admin-field admin-toggle-field">
+          <label for="settingEmailEnabled">Email notifications</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingEmailEnabled" checked />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary admin-save-btn"
+          id="adminSaveBtn"
+        >
+          Save Settings
+        </button>
+      </form>
+    </aside>
+
+    <!-- Login Modal -->
+    <div class="login-overlay" id="loginOverlay">
+      <div class="login-modal">
+        <button
+          type="button"
+          class="btn-close-login"
+          onclick="closeLoginModal()"
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path
+              d="M18 6L6 18M6 6l12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        <div class="login-modal-header">
+          <div class="login-logo">
+            <svg viewBox="0 0 48 48" fill="none" width="44" height="44">
+              <circle cx="24" cy="24" r="22" fill="#1B6B3A" />
+              <path d="M24 8 L30 18 H18 Z" fill="#fff" />
+              <path d="M24 14 L32 26 H16 Z" fill="#fff" />
+              <path d="M24 20 L34 34 H14 Z" fill="#fff" />
+              <rect x="22" y="32" width="4" height="8" rx="1" fill="#8B5E3C" />
+            </svg>
+          </div>
+          <h3>Admin Sign In</h3>
+          <p>Sign in to manage portal settings</p>
+        </div>
+        <form onsubmit="handleLogin(event)" class="login-form">
+          <div class="login-field">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="admin@bigbasstree.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="login-field">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Enter password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <p class="login-error" id="loginError"></p>
+          <button
+            type="submit"
+            class="btn btn-primary login-submit-btn"
+            id="loginSubmitBtn"
+          >
+            Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Firebase SDKs (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/contracts.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/invoices.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

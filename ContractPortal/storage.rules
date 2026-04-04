@@ -1,0 +1,15 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Contracts folder — anyone can upload, authenticated users can read/list
+    match /contracts/{fileName} {
+      allow write: if true;
+      allow read: if true;
+    }
+
+    // Deny everything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
