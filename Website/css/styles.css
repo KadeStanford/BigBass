@@ -1563,10 +1563,35 @@ ul {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .service-area-map iframe {
   display: block;
+}
+
+.map-overlay-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.map-parish-label {
+  position: absolute;
+  background: rgba(30, 64, 175, 0.85);
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
 }
 
 .service-area-parishes h3 {
@@ -1610,83 +1635,6 @@ ul {
 .parish-note a {
   color: var(--blue-600);
   text-decoration: underline;
-}
-
-
-/* ================================================
-   REVIEWS / SOCIAL PROOF SECTION
-   ================================================ */
-.reviews {
-  padding: 100px 0;
-  background: var(--gray-50);
-}
-
-.reviews-card {
-  max-width: 700px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 16px;
-  padding: 48px;
-  text-align: center;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-}
-
-.reviews-rating {
-  margin-bottom: 32px;
-}
-
-.reviews-score {
-  font-family: 'Oswald', sans-serif;
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--gray-900);
-  line-height: 1;
-}
-
-.reviews-stars {
-  font-size: 1.8rem;
-  color: #F59E0B;
-  margin: 8px 0;
-  letter-spacing: 2px;
-}
-
-.reviews-count {
-  color: var(--gray-500);
-  font-size: 0.95rem;
-}
-
-.reviews-highlights {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 32px;
-  text-align: left;
-}
-
-.review-highlight {
-  padding: 20px;
-  background: var(--gray-50);
-  border-radius: 10px;
-}
-
-.review-highlight-stars {
-  color: #F59E0B;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-
-.review-highlight p {
-  font-size: 0.9rem;
-  color: var(--gray-700);
-  line-height: 1.6;
-  font-style: italic;
-  margin-bottom: 8px;
-}
-
-.review-highlight-author {
-  font-size: 0.8rem;
-  color: var(--gray-500);
 }
 
 
@@ -1827,10 +1775,6 @@ ul {
   }
 
   .service-area-content {
-    grid-template-columns: 1fr;
-  }
-
-  .reviews-highlights {
     grid-template-columns: 1fr;
   }
 }
@@ -2037,22 +1981,6 @@ ul {
 
   .service-area-map iframe {
     height: 280px;
-  }
-
-  .reviews {
-    padding: 60px 0;
-  }
-
-  .reviews-card {
-    padding: 32px 20px;
-  }
-
-  .reviews-score {
-    font-size: 2.8rem;
-  }
-
-  .reviews-highlights {
-    grid-template-columns: 1fr;
   }
 
   .footer-payment {
