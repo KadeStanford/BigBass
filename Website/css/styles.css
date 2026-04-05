@@ -128,6 +128,11 @@ ul {
   transform: translateX(40px);
 }
 
+/* Prevent horizontal animations from causing overflow */
+.about, .contact {
+  overflow-x: hidden;
+}
+
 [data-animate].visible {
   opacity: 1;
   transform: translate(0, 0);
