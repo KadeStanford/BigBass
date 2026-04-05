@@ -27,6 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
   <!-- JSON-LD: LocalBusiness -->
   <script type="application/ld+json">
@@ -570,17 +571,7 @@
       </div>
       <div class="service-area-content" data-animate="fade-up">
         <div class="service-area-map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d440000!2d-91.1!3d30.65!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8626a2d14b8e0e3b%3A0x5c5e5adba5e0f06a!2sClinton%2C%20LA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade" title="Big Bass Tree Service coverage area - East Feliciana, West Feliciana, East Baton Rouge, St. Helena, and Livingston Parishes"></iframe>
-          <div class="map-overlay-labels">
-            <span class="map-parish-label" style="top: 25%; left: 30%;">West Feliciana</span>
-            <span class="map-parish-label" style="top: 30%; left: 55%;">East Feliciana</span>
-            <span class="map-parish-label" style="top: 25%; left: 75%;">St. Helena</span>
-            <span class="map-parish-label" style="top: 60%; left: 35%;">East Baton Rouge</span>
-            <span class="map-parish-label" style="top: 55%; left: 70%;">Livingston</span>
-          </div>
+          <div id="parish-map" style="width:100%;height:400px;"></div>
         </div>
         <div class="service-area-parishes">
           <h3>Parishes We Serve</h3>
@@ -796,5 +787,41 @@
   </button>
 
   <script src="js/main.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+  (function() {
+    var map = L.map('parish-map', { scrollWheelZoom: false }).setView([30.65, -90.85], 9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 13,
+      minZoom: 8
+    }).addTo(map);
+
+    var parishes = [
+      { name: 'East Feliciana Parish', coords: [[30.998,-91.180],[30.998,-90.826],[30.993,-90.776],[30.974,-90.725],[30.962,-90.696],[30.894,-90.686],[30.852,-90.691],[30.828,-90.686],[30.767,-90.694],[30.720,-90.699],[30.664,-90.697],[30.650,-91.015],[30.653,-91.068],[30.655,-91.180]] },
+      { name: 'West Feliciana Parish', coords: [[31.003,-91.630],[31.003,-91.180],[30.655,-91.180],[30.653,-91.068],[30.650,-91.180],[30.650,-91.340],[30.680,-91.388],[30.720,-91.425],[30.760,-91.458],[30.810,-91.502],[30.850,-91.535],[30.880,-91.555],[30.920,-91.573],[30.960,-91.600],[31.003,-91.630]] },
+      { name: 'East Baton Rouge Parish', coords: [[30.655,-91.180],[30.653,-91.068],[30.650,-91.015],[30.664,-90.697],[30.616,-90.695],[30.570,-90.726],[30.535,-90.755],[30.496,-90.810],[30.470,-90.832],[30.421,-90.856],[30.380,-90.870],[30.343,-90.870],[30.308,-90.890],[30.290,-90.930],[30.295,-91.005],[30.297,-91.064],[30.300,-91.135],[30.310,-91.175],[30.355,-91.210],[30.395,-91.237],[30.445,-91.250],[30.495,-91.257],[30.530,-91.254],[30.575,-91.237],[30.610,-91.215],[30.640,-91.195],[30.655,-91.180]] },
+      { name: 'St. Helena Parish', coords: [[30.894,-90.686],[30.865,-90.582],[30.852,-90.480],[30.850,-90.396],[30.848,-90.310],[30.845,-90.253],[30.783,-90.258],[30.740,-90.266],[30.696,-90.280],[30.650,-90.300],[30.590,-90.320],[30.555,-90.350],[30.530,-90.400],[30.515,-90.470],[30.518,-90.540],[30.530,-90.610],[30.553,-90.660],[30.570,-90.685],[30.616,-90.695],[30.664,-90.697],[30.720,-90.699],[30.767,-90.694],[30.828,-90.686],[30.852,-90.691],[30.894,-90.686]] },
+      { name: 'Livingston Parish', coords: [[30.570,-90.726],[30.553,-90.660],[30.530,-90.610],[30.518,-90.540],[30.515,-90.470],[30.530,-90.400],[30.510,-90.360],[30.475,-90.330],[30.430,-90.310],[30.385,-90.310],[30.340,-90.320],[30.295,-90.340],[30.252,-90.370],[30.220,-90.423],[30.195,-90.490],[30.185,-90.570],[30.195,-90.650],[30.220,-90.720],[30.260,-90.775],[30.310,-90.820],[30.343,-90.870],[30.380,-90.870],[30.421,-90.856],[30.470,-90.832],[30.496,-90.810],[30.535,-90.755],[30.570,-90.726]] }
+    ];
+
+    parishes.forEach(function(p) {
+      var polygon = L.polygon(p.coords, {
+        color: '#1e40af',
+        weight: 2.5,
+        fillColor: '#3b82f6',
+        fillOpacity: 0.18
+      }).addTo(map);
+      polygon.bindTooltip(p.name, {
+        permanent: true,
+        direction: 'center',
+        className: 'parish-tooltip'
+      });
+    });
+
+    L.marker([30.86, -91.02]).addTo(map)
+      .bindPopup('<strong>Big Bass Tree Services</strong><br>Clinton, LA');
+  })();
+  </script>
 </body>
 </html>

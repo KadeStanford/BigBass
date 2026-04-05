@@ -1563,35 +1563,24 @@ ul {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  position: relative;
 }
 
-.service-area-map iframe {
-  display: block;
-}
-
-.map-overlay-labels {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.map-parish-label {
-  position: absolute;
+.parish-tooltip {
   background: rgba(30, 64, 175, 0.85);
   color: #fff;
   font-family: 'Oswald', sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 4px;
-  white-space: nowrap;
-  transform: translate(-50%, -50%);
+  border: none;
+  box-shadow: none;
+}
+
+.parish-tooltip::before {
+  display: none;
 }
 
 .service-area-parishes h3 {
@@ -1977,10 +1966,6 @@ ul {
 
   .service-area {
     padding: 60px 0;
-  }
-
-  .service-area-map iframe {
-    height: 280px;
   }
 
   .footer-payment {
