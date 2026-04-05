@@ -141,10 +141,12 @@ body {
   gap: 16px;
 }
 
-.logo-icon svg {
+.logo-icon svg,
+.logo-icon img {
   width: 48px;
   height: 48px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  object-fit: contain;
 }
 
 .logo-text h1 {
@@ -1801,7 +1803,8 @@ body {
     padding: 14px 20px;
   }
 
-  .logo-icon svg {
+  .logo-icon svg,
+  .logo-icon img {
     width: 40px;
     height: 40px;
   }
@@ -2014,10 +2017,10 @@ body {
   }
 
   .header-inner {
-    flex-direction: column;
-    gap: 4px;
-    text-align: center;
-    padding: 14px 16px;
+    flex-direction: row;
+    gap: 0;
+    text-align: left;
+    padding: 10px 16px;
   }
 
   .header-contact {
@@ -2053,7 +2056,8 @@ body {
     gap: 10px;
   }
 
-  .logo-icon svg {
+  .logo-icon svg,
+  .logo-icon img {
     width: 36px;
     height: 36px;
   }
