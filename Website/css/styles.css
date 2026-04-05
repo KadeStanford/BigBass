@@ -1844,21 +1844,27 @@ ul {
     height: 100vh;
     background: var(--gray-900);
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     padding: 80px 32px 32px;
     gap: 0;
     transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: -8px 0 32px rgba(0,0,0,0.3);
+    list-style: none;
   }
 
   .nav-menu.open {
     right: 0;
   }
 
+  .nav-menu li {
+    width: 100%;
+  }
+
   .nav-menu .nav-link {
     color: var(--gray-300);
     padding: 14px 0;
     width: 100%;
+    display: block;
     border-bottom: 1px solid rgba(255,255,255,0.06);
     font-size: 16px;
   }
@@ -1876,8 +1882,17 @@ ul {
   .nav-menu .nav-admin {
     padding: 14px 0 !important;
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     opacity: 0.5;
     border-bottom: none;
+    font-size: 14px;
+    color: var(--gray-400);
+  }
+
+  .nav-menu .nav-admin::before {
+    content: 'Admin';
   }
 
   .nav-menu .nav-admin:hover {
