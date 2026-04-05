@@ -338,13 +338,7 @@ function renderInvoicePreview(data) {
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:24px;border-bottom:3px solid #1B6B3A;">
         <div>
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;">
-            <svg viewBox="0 0 48 48" fill="none" width="44" height="44">
-              <circle cx="24" cy="24" r="22" fill="#1B6B3A"/>
-              <path d="M24 8 L30 18 H18 Z" fill="#fff"/>
-              <path d="M24 14 L32 26 H16 Z" fill="#fff"/>
-              <path d="M24 20 L34 34 H14 Z" fill="#fff"/>
-              <rect x="22" y="32" width="4" height="8" rx="1" fill="#8B5E3C"/>
-            </svg>
+            <img src="${typeof COMPANY_LOGO_BASE64 !== 'undefined' ? COMPANY_LOGO_BASE64 : '../Website/images/logo.png'}" alt="Big Bass Logo" style="width:60px;height:60px;object-fit:contain;">
             <div>
               <div style="font-size:1.3rem;font-weight:700;color:#1B6B3A;letter-spacing:-0.02em;">Big Bass Tree Services, LLC</div>
               <div style="font-size:0.78rem;color:#6c757d;">Licensed Louisiana Arborist #2687</div>
@@ -464,11 +458,21 @@ function downloadInvoicePDF() {
 
   y = 16;
 
-  // Company name
+  // Add company logo
+  if (typeof COMPANY_LOGO_BASE64 !== 'undefined') {
+    try {
+      doc.addImage(COMPANY_LOGO_BASE64, 'PNG', margin, y - 8, 22, 22);
+    } catch (e) {
+      console.warn('Could not add logo to PDF:', e);
+    }
+  }
+
+  // Company name (shifted right to accommodate logo)
+  const textX = typeof COMPANY_LOGO_BASE64 !== 'undefined' ? margin + 25 : margin;
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(27, 107, 58);
-  doc.text("Big Bass Tree Services, LLC", margin, y);
+  doc.text("Big Bass Tree Services, LLC", textX, y);
 
   // INVOICE text right-aligned
   doc.setFontSize(28);
@@ -479,7 +483,7 @@ function downloadInvoicePDF() {
   doc.setFontSize(8);
   doc.setFont("helvetica", "normal");
   doc.setTextColor(108, 117, 125);
-  doc.text("Licensed Louisiana Arborist #2687", margin, y);
+  doc.text("Licensed Louisiana Arborist #2687", textX, y);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "bold");
@@ -492,9 +496,9 @@ function downloadInvoicePDF() {
   doc.setFont("helvetica", "normal");
   doc.setTextColor(108, 117, 125);
   doc.setFontSize(8.5);
-  doc.text("1726 Lyman Lane", margin, y);
+  doc.text("1726 Lyman Lane", textX, y);
   y += 4;
-  doc.text("Clinton, LA 70722", margin, y);
+  doc.text("Clinton, LA 70722", textX, y);
 
   // Divider
   y += 8;
