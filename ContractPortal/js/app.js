@@ -761,8 +761,7 @@ async function sendForSignature() {
     await db.collection("signing").doc(signingToken).set(signingDoc);
 
     // Compose signing URL
-    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, "");
-    const signingUrl = `${baseUrl}/sign.html?token=${signingToken}`;
+    const signingUrl = `${SIGNING_BASE_URL}/sign.html?token=${signingToken}`;
 
     // Move to completion step with signing info
     goToStep(5);

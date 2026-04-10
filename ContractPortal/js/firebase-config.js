@@ -29,6 +29,9 @@ const EMAILJS_CONFIG = {
   confirmationTemplateId: "template_confirmation",
 };
 
+// Base URL for signing links (use custom domain, not Amplify default)
+const SIGNING_BASE_URL = "https://www.bigbasstrees.com/portal";
+
 // Initialize EmailJS SDK
 if (typeof emailjs !== "undefined") {
   emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });

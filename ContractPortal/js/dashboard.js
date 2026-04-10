@@ -243,8 +243,7 @@ function toggleContractDetail(id) {
 }
 
 function copyContractLink(token) {
-  const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, "");
-  const url = `${baseUrl}/sign.html?token=${token}`;
+  const url = `${SIGNING_BASE_URL}/sign.html?token=${token}`;
   navigator.clipboard.writeText(url).then(() => {
     showToast("Signing link copied!", "success");
   }).catch(() => {
@@ -261,8 +260,7 @@ async function resendContract(contractId) {
     return;
   }
 
-  const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, "");
-  const signingUrl = `${baseUrl}/sign.html?token=${contract.signingToken}`;
+  const signingUrl = `${SIGNING_BASE_URL}/sign.html?token=${contract.signingToken}`;
 
   try {
     let companyEmail = "";
