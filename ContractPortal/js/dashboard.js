@@ -272,7 +272,7 @@ async function resendContract(contractId) {
 
     await emailjs.send(
       EMAILJS_CONFIG.serviceId,
-      EMAILJS_CONFIG.templateId,
+      EMAILJS_CONFIG.signingTemplateId,
       {
         to_name: contract.customerName,
         to_email: contract.customerEmail,
@@ -280,7 +280,7 @@ async function resendContract(contractId) {
         contract_type: contract.contractType === "insurance" ? "Insurance Services" : "General Services",
         customer_name: contract.customerName,
         customer_email: contract.customerEmail,
-        pdf_link: signingUrl,
+        signing_link: signingUrl,
       },
       EMAILJS_CONFIG.publicKey
     );

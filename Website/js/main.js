@@ -4,6 +4,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ── Initialize EmailJS ── */
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init("Ivts-AaJVTUhc3stA");
+  }
+
   /* ── Navbar Scroll Effect ── */
   const navbar = document.querySelector('.navbar');
   const handleScroll = () => {
@@ -136,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Contact Form Handling ── */
   const contactForm = document.querySelector('.contact-form');
   if (contactForm) {
-    contactForm.addEventListener('submit', e => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const btn = contactForm.querySelector('button[type="submit"]');
@@ -144,18 +149,40 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.innerHTML = 'Sending...';
       btn.disabled = true;
 
-      // Simulate sending — replace with real endpoint when ready
-      setTimeout(() => {
+      const name = (contactForm.querySelector('#contactName') || contactForm.querySelector('input[placeholder*="name" i]'))?.value.trim() || '';
+      const phone = (contactForm.querySelector('#contactPhone') || contactForm.querySelector('input[type="tel"]'))?.value.trim() || '';
+      const email = (contactForm.querySelector('#contactEmail') || contactForm.querySelector('input[type="email"]'))?.value.trim() || '';
+      const serviceEl = contactForm.querySelector('#contactService') || contactForm.querySelector('select');
+      const serviceName = serviceEl ? (serviceEl.options[serviceEl.selectedIndex]?.text || 'Not specified') : 'Not specified';
+      const message = (contactForm.querySelector('#contactMessage') || contactForm.querySelector('textarea'))?.value.trim() || '';
+
+      if (typeof emailjs === 'undefined') {
+        btn.innerHTML = '✗ Email service unavailable';
+        btn.style.background = '#991b1b';
+        setTimeout(() => { btn.innerHTML = origText; btn.style.background = ''; btn.disabled = false; }, 3000);
+        return;
+      }
+
+      try {
+        await emailjs.send("service_hdtzdh6", "template_contact", {
+          to_email: "bigbasstrees@gmail.com",
+          from_name: name,
+          from_email: email || "Not provided",
+          from_phone: phone,
+          service: serviceName,
+          message: message || "No message provided.",
+        });
+
         btn.innerHTML = '✓ Message Sent!';
         btn.style.background = 'var(--green-700)';
         contactForm.reset();
-
-        setTimeout(() => {
-          btn.innerHTML = origText;
-          btn.style.background = '';
-          btn.disabled = false;
-        }, 3000);
-      }, 1200);
+        setTimeout(() => { btn.innerHTML = origText; btn.style.background = ''; btn.disabled = false; }, 3000);
+      } catch (err) {
+        console.error('Contact form error:', err);
+        btn.innerHTML = '✗ Failed to send';
+        btn.style.background = '#991b1b';
+        setTimeout(() => { btn.innerHTML = origText; btn.style.background = ''; btn.disabled = false; }, 3000);
+      }
     });
 
     // Phone formatting

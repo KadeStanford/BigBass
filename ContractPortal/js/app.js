@@ -609,7 +609,7 @@ async function submitContract() {
 
   // Move to completion step
   goToStep(5);
-  localStorage.removeItem(AUTOSAVE_KEY);
+  sessionStorage.removeItem(AUTOSAVE_KEY);
   showToast("Contract submitted successfully!", "success");
 
   // Gather data and generate PDF
@@ -766,7 +766,7 @@ async function sendForSignature() {
 
     // Move to completion step with signing info
     goToStep(5);
-    localStorage.removeItem(AUTOSAVE_KEY);
+    sessionStorage.removeItem(AUTOSAVE_KEY);
 
     // Update completion screen to show signing link
     const completionScreen = document.querySelector("#step5 .completion-screen");
@@ -802,12 +802,12 @@ async function sendForSignature() {
           contract_type: selectedContractType === "insurance" ? "Insurance Services" : "General Services",
           customer_name: data.customerName,
           customer_email: data.emailAddress,
-          pdf_link: signingUrl,
+          signing_link: signingUrl,
         };
 
         await emailjs.send(
           EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.templateId,
+          EMAILJS_CONFIG.signingTemplateId,
           templateParams,
           EMAILJS_CONFIG.publicKey
         );
@@ -815,7 +815,7 @@ async function sendForSignature() {
         if (companyEmail) {
           await emailjs.send(
             EMAILJS_CONFIG.serviceId,
-            EMAILJS_CONFIG.templateId,
+            EMAILJS_CONFIG.signingTemplateId,
             { ...templateParams, to_email: companyEmail, to_name: "Big Bass Tree Services" },
             EMAILJS_CONFIG.publicKey
           );
@@ -1265,7 +1265,7 @@ function startOver() {
   selectedContractType = null;
 
   // Clear auto-save
-  localStorage.removeItem(AUTOSAVE_KEY);
+  sessionStorage.removeItem(AUTOSAVE_KEY);
 
   // Reset form
   document.getElementById("customerForm").reset();
@@ -1373,16 +1373,16 @@ function saveToLocalStorage() {
   };
 
   try {
-    localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(state));
+    sessionStorage.setItem(AUTOSAVE_KEY, JSON.stringify(state));
   } catch (e) {
-    // localStorage full or unavailable — fail silently
+    // sessionStorage full or unavailable — fail silently
   }
 }
 
 function restoreAutosave() {
   let saved;
   try {
-    const raw = localStorage.getItem(AUTOSAVE_KEY);
+    const raw = sessionStorage.getItem(AUTOSAVE_KEY);
     if (!raw) return;
     saved = JSON.parse(raw);
   } catch (e) {
@@ -1391,7 +1391,7 @@ function restoreAutosave() {
 
   // Only restore if saved within the last 24 hours
   if (!saved || !saved.savedAt || Date.now() - saved.savedAt > 86400000) {
-    localStorage.removeItem(AUTOSAVE_KEY);
+    sessionStorage.removeItem(AUTOSAVE_KEY);
     return;
   }
 
@@ -1417,7 +1417,7 @@ function restoreAutosave() {
 
   document.getElementById("restorePromptNew").onclick = function () {
     overlay.classList.remove("active");
-    localStorage.removeItem(AUTOSAVE_KEY);
+    sessionStorage.removeItem(AUTOSAVE_KEY);
   };
 }
 

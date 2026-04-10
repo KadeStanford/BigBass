@@ -24,4 +24,6 @@ const EMAILJS_CONFIG = {
   publicKey: "Ivts-AaJVTUhc3stA",
   serviceId: "service_hdtzdh6",
   templateId: "template_p0k5tgu",
+  signingTemplateId: "template_signing",
+  contactTemplateId: "template_contact",
 };

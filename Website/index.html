@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Big Bass Tree Services | Professional Tree Care</title>
   <meta name="description" content="Big Bass Tree Services provides expert tree removal, trimming, stump grinding, and emergency storm services in Clinton, LA and surrounding parishes. Licensed, insured, and trusted by homeowners across East Feliciana and the greater Baton Rouge area.">
+  <meta name="geo.region" content="US-LA">
+  <meta name="geo.placename" content="Clinton, Louisiana">
+  <meta name="geo.position" content="30.8638;-91.0154">
+  <meta name="ICBM" content="30.8638, -91.0154">
   <link rel="canonical" href="https://www.bigbasstreeservice.com/">
 
   <!-- Open Graph -->
@@ -70,7 +74,8 @@
     ],
     "sameAs": [
       "https://www.facebook.com/bigbasstreeservicellc",
-      "https://www.instagram.com/bigbasstreeservicellc/"
+      "https://www.instagram.com/bigbasstreeservicellc/",
+      "https://www.google.com/maps/place/Big+Bass+Tree+Services"
     ],
     "priceRange": "$$",
     "description": "Professional tree removal, trimming, stump grinding, lot clearing, and emergency storm damage services in Clinton, LA and surrounding parishes. Licensed, insured, and trusted.",
@@ -150,6 +155,53 @@
       }
     ]
   }
+  </script>
+
+  <!-- JSON-LD: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.bigbasstreeservice.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://www.bigbasstreeservice.com/#services" },
+      { "@type": "ListItem", "position": 3, "name": "About", "item": "https://www.bigbasstreeservice.com/#about" },
+      { "@type": "ListItem", "position": 4, "name": "Contact", "item": "https://www.bigbasstreeservice.com/#contact" }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Individual Service Offerings -->
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Tree Removal",
+      "description": "Safe and professional tree removal services for residential and commercial properties in Clinton, LA and surrounding parishes including East Feliciana, West Feliciana, East Baton Rouge, St. Helena, and Livingston Parish.",
+      "provider": { "@type": "TreeService", "name": "Big Bass Tree Services, LLC" },
+      "areaServed": ["Clinton", "Zachary", "Baker", "St. Francisville", "Greensburg", "Denham Springs", "Baton Rouge"],
+      "serviceType": "Tree Removal"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Stump Grinding",
+      "description": "Complete stump grinding and removal services. We eliminate unsightly stumps and restore your yard to a clean, usable state. Serving East Feliciana Parish and surrounding areas.",
+      "provider": { "@type": "TreeService", "name": "Big Bass Tree Services, LLC" },
+      "areaServed": ["Clinton", "Zachary", "Baker", "St. Francisville", "Greensburg", "Denham Springs", "Baton Rouge"],
+      "serviceType": "Stump Grinding"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Emergency Storm Damage Cleanup",
+      "description": "24/7 emergency tree and storm damage cleanup services. Fast response for fallen trees, dangerous limbs, and storm debris in the greater Baton Rouge area.",
+      "provider": { "@type": "TreeService", "name": "Big Bass Tree Services, LLC" },
+      "areaServed": ["Clinton", "Zachary", "Baker", "St. Francisville", "Greensburg", "Denham Springs", "Baton Rouge"],
+      "serviceType": "Emergency Tree Service"
+    }
+  ]
   </script>
 </head>
 <body>
@@ -611,6 +663,10 @@
             </li>
           </ul>
           <p class="parish-note">Don't see your area? <a href="#contact">Contact us</a> — we may still be able to help!</p>
+          <div class="service-cities">
+            <h4>Cities &amp; Towns We Serve</h4>
+            <p>Clinton, Zachary, Baker, St. Francisville, Jackson, Greensburg, Denham Springs, Walker, Watson, Slaughter, Ethel, Norwood, Wilson, and surrounding communities across greater Baton Rouge and the Feliciana region.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -821,6 +877,7 @@
     <button class="btn btn-primary btn-sm" id="cookieAccept">Accept</button>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" integrity="sha384-SALc35EccAf6RzGw4iNsyj7kTPr33K7RoGzYu+7heZhT8s0GZouafRiCg1qy44AS" crossorigin="anonymous"></script>
   <script src="js/main.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script>

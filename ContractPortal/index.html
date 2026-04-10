@@ -10,9 +10,9 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js" integrity="sha384-dPowQo9uxJU703klzvnG+vzLHQDNmO/zREXw6BhCMupB54CE70wj6SWOGVPySK3s" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
     <script src="js/logo-data.js"></script>
   </head>
   <body>
@@ -345,6 +345,7 @@
                   type="text"
                   id="customerName"
                   required
+                  maxlength="150"
                   placeholder="Full legal name"
                 />
               </div>
@@ -356,6 +357,7 @@
                   type="tel"
                   id="phoneNumber"
                   required
+                  maxlength="20"
                   placeholder="(555) 555-5555"
                 />
               </div>
@@ -369,6 +371,7 @@
                   type="text"
                   id="customerAddress"
                   required
+                  maxlength="300"
                   placeholder="Full mailing address"
                 />
               </div>
@@ -380,6 +383,7 @@
                   type="email"
                   id="emailAddress"
                   required
+                  maxlength="254"
                   placeholder="email@example.com"
                 />
               </div>
@@ -393,6 +397,7 @@
                   type="text"
                   id="locationOfServices"
                   required
+                  maxlength="300"
                   placeholder="Address where services will be performed"
                 />
                 <label class="same-address-toggle">
@@ -515,6 +520,7 @@
                   type="text"
                   id="insuranceCarrier"
                   required
+                  maxlength="150"
                   placeholder="Insurance company name"
                 />
               </div>
@@ -526,6 +532,7 @@
                   type="text"
                   id="policyNumber"
                   required
+                  maxlength="50"
                   placeholder="Policy #"
                 />
               </div>
@@ -539,6 +546,7 @@
                   type="text"
                   id="claimNumber"
                   required
+                  maxlength="50"
                   placeholder="Claim #"
                 />
               </div>
@@ -550,6 +558,7 @@
                   type="text"
                   id="adjusterName"
                   required
+                  maxlength="150"
                   placeholder="Adjuster full name"
                 />
               </div>
@@ -560,6 +569,7 @@
                 <input
                   type="tel"
                   id="adjusterPhone"
+                  maxlength="20"
                   placeholder="(555) 555-5555"
                 />
               </div>
@@ -568,6 +578,7 @@
                 <input
                   type="email"
                   id="adjusterEmail"
+                  maxlength="254"
                   placeholder="adjuster@insurance.com"
                 />
               </div>
@@ -590,6 +601,7 @@
                   id="scopeOfServices"
                   rows="3"
                   required
+                  maxlength="2000"
                   placeholder="Describe the services to be performed..."
                 ></textarea>
               </div>
@@ -602,6 +614,7 @@
                 <textarea
                   id="additionalServices"
                   rows="2"
+                  maxlength="2000"
                   placeholder="Any additional services or notes..."
                 ></textarea>
               </div>
@@ -617,6 +630,7 @@
                     type="text"
                     id="contractPrice"
                     required
+                    maxlength="15"
                     placeholder="0.00"
                   />
                 </div>
@@ -626,6 +640,7 @@
                 <input
                   type="text"
                   id="equipmentRequired"
+                  maxlength="500"
                   placeholder="List equipment needed"
                 />
               </div>
@@ -1176,7 +1191,7 @@
       <div class="dashboard-header">
         <h2>Contracts</h2>
         <div class="dashboard-controls">
-          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="contractSearch" oninput="filterContracts()" />
+          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="contractSearch" maxlength="150" oninput="filterContracts()" />
           <select class="dashboard-filter" id="contractStatusFilter" onchange="filterContracts()">
             <option value="">All Statuses</option>
             <option value="sent">Sent</option>
@@ -1224,7 +1239,7 @@
       <div class="dashboard-header">
         <h2>Invoices</h2>
         <div class="dashboard-controls">
-          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="invoiceSearch" oninput="filterInvoices()" />
+          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="invoiceSearch" maxlength="150" oninput="filterInvoices()" />
           <select class="dashboard-filter" id="invoiceStatusFilter" onchange="filterInvoices()">
             <option value="">All Statuses</option>
             <option value="unpaid">Unpaid</option>
@@ -1290,7 +1305,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="invoiceNumber">Invoice Number <span class="required">*</span></label>
-                <input type="text" id="invoiceNumber" placeholder="INV-202603-0001" />
+                <input type="text" id="invoiceNumber" maxlength="50" placeholder="INV-202603-0001" />
               </div>
               <div class="form-group">
                 <label for="invoiceDate">Invoice Date <span class="required">*</span></label>
@@ -1317,11 +1332,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="invPONumber">PO / Reference Number</label>
-                <input type="text" id="invPONumber" placeholder="Optional" />
+                <input type="text" id="invPONumber" maxlength="50" placeholder="Optional" />
               </div>
               <div class="form-group">
                 <label for="invJobLocation">Job Location</label>
-                <input type="text" id="invJobLocation" placeholder="Address where work was performed" />
+                <input type="text" id="invJobLocation" maxlength="300" placeholder="Address where work was performed" />
               </div>
             </div>
           </div>
@@ -1337,21 +1352,21 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="invCustomerName">Customer Name <span class="required">*</span></label>
-                <input type="text" id="invCustomerName" placeholder="Full name or business name" />
+                <input type="text" id="invCustomerName" maxlength="150" placeholder="Full name or business name" />
               </div>
               <div class="form-group">
                 <label for="invCustomerPhone">Phone Number</label>
-                <input type="tel" id="invCustomerPhone" placeholder="(555) 555-5555" />
+                <input type="tel" id="invCustomerPhone" maxlength="20" placeholder="(555) 555-5555" />
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="invCustomerAddress">Address</label>
-                <input type="text" id="invCustomerAddress" placeholder="Full mailing address" />
+                <input type="text" id="invCustomerAddress" maxlength="300" placeholder="Full mailing address" />
               </div>
               <div class="form-group">
                 <label for="invCustomerEmail">Email Address</label>
-                <input type="email" id="invCustomerEmail" placeholder="email@example.com" />
+                <input type="email" id="invCustomerEmail" maxlength="254" placeholder="email@example.com" />
               </div>
             </div>
           </div>
@@ -1444,7 +1459,7 @@
             </h3>
             <div class="form-group full-width">
               <label for="invoiceNotes">Notes / Additional Terms</label>
-              <textarea id="invoiceNotes" rows="3" placeholder="Payment instructions, special terms, job notes..."></textarea>
+              <textarea id="invoiceNotes" rows="3" maxlength="2000" placeholder="Payment instructions, special terms, job notes..."></textarea>
             </div>
           </div>
 
