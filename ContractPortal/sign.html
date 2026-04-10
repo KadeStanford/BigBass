@@ -4,18 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Contract — Big Bass Tree Services, LLC</title>
-    <link rel="stylesheet" href="css/styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="js/logo-data.js"></script>
     <style>
-      body { font-family: 'Inter', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+      /* ===== Base ===== */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8f9fa;
+        color: #212529;
+        line-height: 1.6;
+      }
+
+      /* ===== Skip Link (accessibility) ===== */
+      .skip-link {
+        position: absolute;
+        top: -100%;
+        left: 16px;
+        background: #1B6B3A;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 0 0 8px 8px;
+        z-index: 1000;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+      .skip-link:focus { top: 0; }
+
+      /* ===== Focus visible ===== */
+      :focus-visible {
+        outline: 3px solid #1B6B3A;
+        outline-offset: 2px;
+      }
+
+      /* ===== Header ===== */
       .sign-header {
         background: #1B6B3A;
         color: #fff;
@@ -26,14 +54,16 @@
       }
       .sign-header img { width: 40px; height: 40px; object-fit: contain; }
       .sign-header h1 { font-size: 1.1rem; margin: 0; font-weight: 700; }
-      .sign-header span { font-size: 0.8rem; opacity: 0.8; }
+      .sign-header span { font-size: 0.8rem; opacity: 0.85; }
 
+      /* ===== Container ===== */
       .sign-container {
         max-width: 900px;
         margin: 24px auto;
-        padding: 0 16px;
+        padding: 0 16px 48px;
       }
 
+      /* ===== Loading ===== */
       .sign-loading {
         text-align: center;
         padding: 80px 24px;
@@ -50,59 +80,200 @@
       }
       @keyframes spin { to { transform: rotate(360deg); } }
 
+      /* ===== Error ===== */
       .sign-error {
         text-align: center;
         padding: 80px 24px;
         color: #991b1b;
       }
-      .sign-error h2 { font-size: 1.3rem; }
+      .sign-error h2 { font-size: 1.3rem; margin-bottom: 8px; }
       .sign-error p { color: #868e96; }
 
+      /* ===== Card ===== */
       .sign-card {
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 1px 8px rgba(0,0,0,0.08);
-        padding: 32px;
+        padding: 28px 32px;
         margin-bottom: 24px;
       }
-
       .sign-card h2 {
         font-size: 1.2rem;
         color: #1B6B3A;
         margin: 0 0 8px;
       }
-
       .sign-card p.subtitle {
-        color: #868e96;
-        font-size: 0.88rem;
+        color: #6c757d;
+        font-size: 0.9rem;
         margin: 0 0 20px;
       }
 
+      /* ===== Contract Preview — formatted & readable ===== */
       .contract-preview {
-        border: 1px solid #e9ecef;
+        border: 1px solid #e0e0e0;
         border-radius: 8px;
-        padding: 24px;
-        max-height: 500px;
+        padding: 28px 24px;
+        max-height: 600px;
         overflow-y: auto;
-        margin-bottom: 24px;
+        font-size: 0.88rem;
+        line-height: 1.75;
+        scroll-behavior: smooth;
+      }
+      .contract-preview:focus { outline: 3px solid #1B6B3A; outline-offset: -2px; }
+
+      .contract-preview h2 {
+        font-size: 1.15rem;
+        text-align: center;
+        color: #1B6B3A;
+        margin-bottom: 4px;
+        letter-spacing: 0.5px;
+      }
+      .contract-preview .company-info {
+        text-align: center;
+        color: #495057;
         font-size: 0.85rem;
-        line-height: 1.65;
+        margin-bottom: 20px;
+        line-height: 1.5;
       }
 
-      .sign-signature-section {
-        margin-top: 24px;
+      .contract-preview .agreement-header {
+        background: #f8faf8;
+        border-left: 4px solid #1B6B3A;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+        border-radius: 0 6px 6px 0;
+        font-size: 0.88rem;
+        line-height: 1.7;
       }
 
-      .sign-sig-block {
+      .contract-preview .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 24px;
         margin-bottom: 24px;
+        padding: 16px;
+        background: #fafafa;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+      .contract-preview .info-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px 0;
+      }
+      .contract-preview .info-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.82rem;
+        min-width: 120px;
+      }
+      .contract-preview .field-value {
+        color: #212529;
+        font-weight: 500;
       }
 
+      .contract-preview .contract-section {
+        margin-bottom: 16px;
+        padding: 14px 16px;
+        background: #fafbfc;
+        border-radius: 6px;
+        border: 1px solid #f0f0f0;
+        font-size: 0.84rem;
+        line-height: 1.75;
+        color: #343a40;
+      }
+      .contract-preview .contract-section:nth-child(even) {
+        background: #fff;
+      }
+      .contract-preview .section-title {
+        display: block;
+        font-weight: 700;
+        color: #1B6B3A;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .contract-preview .page-break {
+        border-top: 2px solid #1B6B3A;
+        margin: 28px 0 16px;
+        padding-top: 12px;
+      }
+      .contract-preview .page-break .page-label {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #1B6B3A;
+      }
+
+      .contract-preview .rate-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        font-size: 0.85rem;
+      }
+      .contract-preview .rate-table th {
+        background: #1B6B3A;
+        color: #fff;
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.82rem;
+      }
+      .contract-preview .rate-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #eee;
+      }
+      .contract-preview .rate-table tbody tr:hover {
+        background: #f4f8f5;
+      }
+      .contract-preview .rate-table .total-row {
+        font-weight: 700;
+        border-top: 2px solid #1B6B3A;
+        background: #f0f7f2;
+      }
+      .contract-preview .rate-table .total-row td {
+        padding: 12px;
+      }
+
+      /* ===== Download bar above contract ===== */
+      .contract-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .btn-download {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border: 1px solid #1B6B3A;
+        border-radius: 8px;
+        background: #fff;
+        color: #1B6B3A;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+      }
+      .btn-download:hover, .btn-download:focus-visible {
+        background: #1B6B3A;
+        color: #fff;
+      }
+      .btn-download:disabled { opacity: 0.5; cursor: not-allowed; }
+      .btn-download svg { flex-shrink: 0; }
+
+      /* ===== Signature Section ===== */
+      .sign-signature-section { margin-top: 24px; }
+
+      .sign-sig-block { margin-bottom: 28px; }
       .sign-sig-block h3 {
         font-size: 1rem;
         color: #212529;
         margin: 0 0 6px;
       }
-
       .sign-sig-block p {
         font-size: 0.85rem;
         color: #6c757d;
@@ -110,73 +281,81 @@
       }
 
       .sign-canvas-wrap {
-        border: 2px dashed #dee2e6;
+        border: 2px dashed #c0c8d0;
         border-radius: 8px;
         padding: 4px;
         background: #fdfdfd;
         margin-bottom: 8px;
+        position: relative;
+      }
+      .sign-canvas-wrap:focus-within {
+        border-color: #1B6B3A;
+        box-shadow: 0 0 0 3px rgba(27, 107, 58, 0.15);
       }
 
       .sign-canvas {
         width: 100%;
-        height: 120px;
+        height: 140px;
         display: block;
         cursor: crosshair;
         touch-action: none;
+        border-radius: 6px;
       }
-
       .sign-canvas.initial-canvas {
-        height: 80px;
-        max-width: 300px;
+        height: 90px;
+        max-width: 340px;
       }
 
       .sign-pad-actions {
         display: flex;
         gap: 8px;
+        margin-top: 4px;
       }
-
       .sign-pad-actions button {
-        padding: 4px 12px;
+        padding: 6px 14px;
         border: 1px solid #dee2e6;
         border-radius: 6px;
         background: #fff;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         cursor: pointer;
         color: #495057;
+        transition: all 0.15s;
       }
-
-      .sign-pad-actions button:hover {
+      .sign-pad-actions button:hover,
+      .sign-pad-actions button:focus-visible {
         background: #f0f4f0;
         border-color: #1B6B3A;
         color: #1B6B3A;
       }
 
-      .sign-date-group {
-        margin-top: 16px;
-      }
-
+      .sign-date-group { margin-top: 16px; }
       .sign-date-group label {
         display: block;
-        font-size: 0.82rem;
+        font-size: 0.84rem;
         font-weight: 600;
         color: #495057;
         margin-bottom: 4px;
       }
-
       .sign-date-group input {
-        padding: 8px 14px;
+        padding: 10px 14px;
         border: 1px solid #dee2e6;
         border-radius: 8px;
-        font-size: 0.88rem;
+        font-size: 0.9rem;
+        font-family: inherit;
+      }
+      .sign-date-group input:focus-visible {
+        border-color: #1B6B3A;
       }
 
+      /* ===== Action Buttons ===== */
       .sign-actions {
         display: flex;
+        flex-wrap: wrap;
         gap: 12px;
         margin-top: 24px;
       }
 
-      .sign-actions .btn-sign-submit {
+      .btn-sign-submit {
         background: #1B6B3A;
         color: #fff;
         border: none;
@@ -189,62 +368,91 @@
         align-items: center;
         gap: 8px;
         transition: background 0.2s;
+        font-family: inherit;
       }
+      .btn-sign-submit:hover { background: #155d32; }
+      .btn-sign-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-      .sign-actions .btn-sign-submit:hover { background: #155d32; }
-      .sign-actions .btn-sign-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-
+      /* ===== Complete / Success ===== */
       .sign-complete {
         text-align: center;
         padding: 48px 24px;
       }
-
       .sign-complete .check-icon {
         width: 64px;
         height: 64px;
         margin: 0 auto 16px;
       }
-
       .sign-complete h2 { color: #1B6B3A; font-size: 1.4rem; margin: 0 0 8px; }
-      .sign-complete p { color: #6c757d; font-size: 0.95rem; }
+      .sign-complete p { color: #6c757d; font-size: 0.95rem; margin-bottom: 8px; }
 
-      /* Reuse contract-document styles from portal */
-      .contract-preview .company-info,
-      .contract-preview .info-grid,
-      .contract-preview .info-row,
-      .contract-preview .info-label,
-      .contract-preview .field-value,
-      .contract-preview .legal-section,
-      .contract-preview .section-title,
-      .contract-preview .rate-table { font-size: inherit; }
+      /* ===== Toast notification ===== */
+      .sign-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: #212529;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        z-index: 9999;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      }
+      .sign-toast.visible { transform: translateX(-50%) translateY(0); }
+      .sign-toast.error { background: #991b1b; }
+
+      /* ===== Responsive ===== */
+      @media (max-width: 640px) {
+        .sign-card { padding: 20px 16px; }
+        .contract-preview { padding: 16px 12px; max-height: 450px; }
+        .contract-preview .info-grid { grid-template-columns: 1fr; gap: 6px; }
+        .sign-canvas { height: 120px; }
+        .sign-canvas.initial-canvas { height: 80px; max-width: 100%; }
+        .sign-actions { flex-direction: column; }
+        .btn-sign-submit { width: 100%; justify-content: center; }
+        .contract-toolbar { justify-content: center; }
+      }
+
+      /* ===== Print ===== */
+      @media print {
+        .sign-header, .sign-actions, .sign-pad-actions, .contract-toolbar { display: none; }
+        .sign-card { box-shadow: none; border: 1px solid #ccc; }
+        .contract-preview { max-height: none; overflow: visible; }
+      }
     </style>
   </head>
   <body>
-    <header class="sign-header">
-      <img src="logo.png" alt="Big Bass Logo" />
+    <!-- Accessibility: skip to main content -->
+    <a href="#mainContent" class="skip-link">Skip to main content</a>
+
+    <header class="sign-header" role="banner">
+      <img src="logo.png" alt="" aria-hidden="true" />
       <div>
         <h1>Big Bass Tree Services, LLC</h1>
         <span>Contract Signing</span>
       </div>
     </header>
 
-    <div class="sign-container">
+    <main id="mainContent" class="sign-container" role="main">
       <!-- Loading state -->
-      <div id="signLoading" class="sign-loading">
-        <div class="spinner"></div>
+      <div id="signLoading" class="sign-loading" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
         <p>Loading contract...</p>
       </div>
 
       <!-- Error state -->
-      <div id="signError" class="sign-error" style="display:none">
+      <div id="signError" class="sign-error" style="display:none" role="alert">
         <h2>Contract Not Found</h2>
         <p>This signing link may have expired or is invalid. Please contact Big Bass Tree Services for assistance.</p>
       </div>
 
       <!-- Already signed state -->
-      <div id="signAlready" class="sign-card" style="display:none">
+      <div id="signAlready" class="sign-card" style="display:none" role="status">
         <div class="sign-complete">
-          <svg class="check-icon" viewBox="0 0 80 80" fill="none">
+          <svg class="check-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
             <circle cx="40" cy="40" r="38" fill="#E8F5E9" stroke="#1B6B3A" stroke-width="3"/>
             <path d="M24 40 L34 50 L56 28" stroke="#1B6B3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -256,9 +464,21 @@
       <!-- Main signing form -->
       <div id="signForm" style="display:none">
         <div class="sign-card">
-          <h2>Review Your Contract</h2>
+          <h2 id="reviewHeading">Review Your Contract</h2>
           <p class="subtitle">Please review the full contract below, then sign at the bottom.</p>
-          <div class="contract-preview" id="contractPreview">
+
+          <div class="contract-toolbar">
+            <button type="button" class="btn-download" id="downloadPreviewBtn" onclick="downloadContractPDF(false)" aria-label="Download contract as PDF">
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Download PDF
+            </button>
+          </div>
+
+          <div class="contract-preview" id="contractPreview" tabindex="0" role="document" aria-labelledby="reviewHeading">
             <!-- Rendered by JS -->
           </div>
         </div>
@@ -267,35 +487,35 @@
           <h2>Sign Contract</h2>
           <div class="sign-signature-section">
             <div class="sign-sig-block">
-              <h3>Right to Cancel — Initial Here</h3>
-              <p>By initialing below, you acknowledge the three day right to cancel as set forth in La. R.S. 9:3538 (E).</p>
+              <h3 id="initialLabel">Right to Cancel — Initial Here</h3>
+              <p id="initialDesc">By initialing below, you acknowledge the three day right to cancel as set forth in La. R.S. 9:3538 (E).</p>
               <div class="sign-canvas-wrap">
-                <canvas id="customerInitialPad" class="sign-canvas initial-canvas"></canvas>
+                <canvas id="customerInitialPad" class="sign-canvas initial-canvas" role="img" aria-labelledby="initialLabel" aria-describedby="initialDesc"></canvas>
               </div>
               <div class="sign-pad-actions">
-                <button type="button" onclick="clearCustomerPad('initial')">Clear</button>
+                <button type="button" onclick="clearCustomerPad('initial')" aria-label="Clear initials">Clear</button>
               </div>
             </div>
 
             <div class="sign-sig-block">
-              <h3>Customer Signature</h3>
-              <p>By signing below, you agree to the scope of work and the terms set forth in this contract.</p>
+              <h3 id="sigLabel">Customer Signature</h3>
+              <p id="sigDesc">By signing below, you agree to the scope of work and the terms set forth in this contract.</p>
               <div class="sign-canvas-wrap">
-                <canvas id="customerSignaturePad" class="sign-canvas"></canvas>
+                <canvas id="customerSignaturePad" class="sign-canvas" role="img" aria-labelledby="sigLabel" aria-describedby="sigDesc"></canvas>
               </div>
               <div class="sign-pad-actions">
-                <button type="button" onclick="clearCustomerPad('signature')">Clear</button>
+                <button type="button" onclick="clearCustomerPad('signature')" aria-label="Clear signature">Clear</button>
               </div>
               <div class="sign-date-group">
                 <label for="customerSignDate">Date</label>
-                <input type="date" id="customerSignDate" />
+                <input type="date" id="customerSignDate" required aria-required="true" />
               </div>
             </div>
           </div>
 
           <div class="sign-actions">
             <button type="button" class="btn-sign-submit" id="customerSubmitBtn" onclick="submitCustomerSignature()">
-              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20" aria-hidden="true">
                 <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
               </svg>
@@ -306,20 +526,28 @@
       </div>
 
       <!-- Success state -->
-      <div id="signSuccess" class="sign-card" style="display:none">
+      <div id="signSuccess" class="sign-card" style="display:none" role="status" aria-live="polite">
         <div class="sign-complete">
-          <svg class="check-icon" viewBox="0 0 80 80" fill="none">
+          <svg class="check-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
             <circle cx="40" cy="40" r="38" fill="#E8F5E9" stroke="#1B6B3A" stroke-width="3"/>
             <path d="M24 40 L34 50 L56 28" stroke="#1B6B3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <h2>Contract Signed Successfully!</h2>
           <p>Thank you for signing. A confirmation email will be sent to your email address.</p>
-          <button type="button" class="btn-sign-submit" style="margin-top:16px" onclick="downloadSignedPDF()">
+          <button type="button" class="btn-sign-submit" style="margin-top:16px" onclick="downloadContractPDF(true)" aria-label="Download signed contract as PDF">
+            <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             Download Signed Copy
           </button>
         </div>
       </div>
-    </div>
+    </main>
+
+    <!-- Toast for non-blocking messages -->
+    <div id="signToast" class="sign-toast" role="alert" aria-live="assertive"></div>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -379,7 +607,6 @@
           // Mark as viewed
           if (signingData.status === "sent") {
             await db.collection("signing").doc(signingToken).update({ status: "viewed" });
-            // Also update the main contract
             if (signingData.contractId) {
               await db.collection("contracts").doc(signingData.contractId).update({
                 status: "viewed",
@@ -391,12 +618,14 @@
           // Render contract preview
           renderContractPreview(signingData);
 
-          // Initialize signature pads
-          initSignaturePads();
-
-          // Show the form
+          // IMPORTANT: Show the form FIRST so canvases have actual dimensions
           document.getElementById("signLoading").style.display = "none";
           document.getElementById("signForm").style.display = "block";
+
+          // THEN initialize signature pads (after layout is computed)
+          requestAnimationFrame(() => {
+            initSignaturePads();
+          });
 
         } catch (e) {
           console.error("Signing page error:", e);
@@ -407,6 +636,16 @@
       function showSignError() {
         document.getElementById("signLoading").style.display = "none";
         document.getElementById("signError").style.display = "block";
+      }
+
+      function showToast(msg, isError) {
+        const t = document.getElementById("signToast");
+        t.textContent = msg;
+        t.className = "sign-toast" + (isError ? " error" : "");
+        // Force reflow then show
+        void t.offsetWidth;
+        t.classList.add("visible");
+        setTimeout(() => t.classList.remove("visible"), 3500);
       }
 
       function renderContractPreview(data) {
@@ -424,15 +663,14 @@
         const initialCanvas = document.getElementById("customerInitialPad");
         const signatureCanvas = document.getElementById("customerSignaturePad");
 
-        // Size canvases
         function sizeCanvas(canvas) {
           const rect = canvas.getBoundingClientRect();
+          if (rect.width === 0 || rect.height === 0) return;
           const ratio = Math.max(window.devicePixelRatio || 1, 1);
           canvas.width = rect.width * ratio;
           canvas.height = rect.height * ratio;
           const ctx = canvas.getContext("2d");
           ctx.scale(ratio, ratio);
-          // Fill with light background
           ctx.fillStyle = "#fdfdfd";
           ctx.fillRect(0, 0, rect.width, rect.height);
         }
@@ -448,14 +686,18 @@
           minWidth: 1, maxWidth: 3, penColor: "#1a1a2e"
         });
 
-        // Resize handler
+        // Debounced resize handler
+        let resizeTimer;
         window.addEventListener("resize", () => {
-          const iData = customerInitialPad.toData();
-          const sData = customerSignaturePad.toData();
-          sizeCanvas(initialCanvas);
-          sizeCanvas(signatureCanvas);
-          customerInitialPad.fromData(iData);
-          customerSignaturePad.fromData(sData);
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            const iData = customerInitialPad.toData();
+            const sData = customerSignaturePad.toData();
+            sizeCanvas(initialCanvas);
+            sizeCanvas(signatureCanvas);
+            if (iData.length) customerInitialPad.fromData(iData);
+            if (sData.length) customerSignaturePad.fromData(sData);
+          }, 150);
         });
       }
 
@@ -470,22 +712,26 @@
       async function submitCustomerSignature() {
         // Validate
         if (!customerInitialPad || customerInitialPad.isEmpty()) {
-          alert("Please provide your initials.");
+          showToast("Please provide your initials.", true);
+          document.getElementById("customerInitialPad").scrollIntoView({ behavior: "smooth", block: "center" });
           return;
         }
         if (!customerSignaturePad || customerSignaturePad.isEmpty()) {
-          alert("Please provide your signature.");
+          showToast("Please provide your signature.", true);
+          document.getElementById("customerSignaturePad").scrollIntoView({ behavior: "smooth", block: "center" });
           return;
         }
         const signDate = document.getElementById("customerSignDate").value;
         if (!signDate) {
-          alert("Please enter the date.");
+          showToast("Please enter the date.", true);
+          document.getElementById("customerSignDate").focus();
           return;
         }
 
         const btn = document.getElementById("customerSubmitBtn");
         btn.disabled = true;
-        btn.textContent = "Submitting...";
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '<svg class="spinner" viewBox="0 0 24 24" width="18" height="18" style="animation:spin .8s linear infinite" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="31" stroke-dashoffset="10"/></svg> Submitting...';
 
         try {
           const db = firebase.firestore();
@@ -516,67 +762,260 @@
           // Show success
           document.getElementById("signForm").style.display = "none";
           document.getElementById("signSuccess").style.display = "block";
+          document.getElementById("signSuccess").scrollIntoView({ behavior: "smooth" });
 
         } catch (e) {
           console.error("Signature submission failed:", e);
-          alert("Failed to submit signature. Please try again.");
+          showToast("Failed to submit signature. Please try again.", true);
           btn.disabled = false;
-          btn.textContent = "Submit Signed Contract";
+          btn.innerHTML = originalHTML;
         }
       }
 
-      function downloadSignedPDF() {
+      /**
+       * Generate a comprehensive PDF of the contract.
+       * @param {boolean} isSigned - Whether to include signature data
+       */
+      function downloadContractPDF(isSigned) {
         if (!signingData || !signingData.formData) return;
 
         const data = signingData.formData;
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF("p", "mm", "letter");
+        const pdf = new jsPDF("p", "mm", "letter");
 
-        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
         const margin = 18;
-        const contentWidth = pageWidth - margin * 2;
+        const cw = pageW - margin * 2;
         let y = margin;
 
-        function addText(text, fontSize, isBold) {
-          doc.setFontSize(fontSize || 10);
-          doc.setFont("helvetica", isBold ? "bold" : "normal");
-          const lines = doc.splitTextToSize(text, contentWidth);
-          const lineHeight = fontSize ? fontSize * 0.45 : 4.5;
-          for (let i = 0; i < lines.length; i++) {
-            if (y > doc.internal.pageSize.getHeight() - margin) {
-              doc.addPage();
-              y = margin;
-            }
-            doc.text(lines[i], margin, y);
-            y += lineHeight;
+        // --- Helpers ---
+        function checkPage(needed) {
+          if (y + needed > pageH - margin) {
+            pdf.addPage();
+            y = margin;
           }
         }
 
-        // Header
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("SERVICES CONTRACT — SIGNED COPY", pageWidth / 2, y, { align: "center" });
-        y += 6;
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text("Big Bass Tree Services, LLC", pageWidth / 2, y, { align: "center" });
-        y += 4;
-        doc.text("1726 Lyman Lane, Clinton, LA 70722", pageWidth / 2, y, { align: "center" });
-        y += 8;
+        function addText(text, fontSize, isBold, color) {
+          pdf.setFontSize(fontSize || 10);
+          pdf.setFont("helvetica", isBold ? "bold" : "normal");
+          if (color) pdf.setTextColor(color[0], color[1], color[2]);
+          else pdf.setTextColor(33, 37, 41);
+          const lines = pdf.splitTextToSize(text, cw);
+          const lh = (fontSize || 10) * 0.42;
+          for (let i = 0; i < lines.length; i++) {
+            checkPage(lh + 1);
+            pdf.text(lines[i], margin, y);
+            y += lh;
+          }
+        }
 
-        // Customer info
-        addText(`Customer: ${data.customerName || ""}`, 10, true);
-        addText(`Address: ${data.customerAddress || ""}`, 10, false);
-        addText(`Phone: ${data.phoneNumber || ""}`, 10, false);
-        addText(`Email: ${data.emailAddress || ""}`, 10, false);
-        y += 4;
-        addText("This contract has been electronically signed.", 10, true);
-        addText(`Signed on: ${document.getElementById("customerSignDate").value || new Date().toLocaleDateString()}`, 10, false);
-        y += 8;
+        function addCenteredText(text, fontSize, isBold, color) {
+          pdf.setFontSize(fontSize || 10);
+          pdf.setFont("helvetica", isBold ? "bold" : "normal");
+          if (color) pdf.setTextColor(color[0], color[1], color[2]);
+          else pdf.setTextColor(33, 37, 41);
+          checkPage(fontSize * 0.5);
+          pdf.text(text, pageW / 2, y, { align: "center" });
+          y += (fontSize || 10) * 0.42;
+        }
 
-        addText("Thank you for choosing Big Bass Tree Services, LLC.", 10, false);
+        function addSpacer(mm) { y += mm; }
 
-        doc.save(`BigBass_SignedContract_${(data.customerName || "customer").replace(/[^a-zA-Z0-9]/g, "_")}.pdf`);
+        function addLine() {
+          checkPage(4);
+          pdf.setDrawColor(27, 107, 58);
+          pdf.setLineWidth(0.5);
+          pdf.line(margin, y, pageW - margin, y);
+          y += 3;
+        }
+
+        function addField(label, value) {
+          checkPage(8);
+          pdf.setFontSize(9);
+          pdf.setFont("helvetica", "bold");
+          pdf.setTextColor(73, 80, 87);
+          pdf.text(label, margin, y);
+          pdf.setFont("helvetica", "normal");
+          pdf.setTextColor(33, 37, 41);
+          pdf.text(value || "N/A", margin + 52, y);
+          y += 5;
+        }
+
+        // --- Header ---
+        addCenteredText("SERVICES CONTRACT", 16, true, [27, 107, 58]);
+        addSpacer(2);
+        addCenteredText(isSigned ? "SIGNED COPY" : "CONTRACT COPY", 10, false, [108, 117, 125]);
+        addSpacer(2);
+        addLine();
+        addSpacer(1);
+        addCenteredText("Big Bass Tree Services, LLC", 11, true);
+        addCenteredText("1726 Lyman Lane, Clinton, LA 70722", 9, false, [108, 117, 125]);
+        addSpacer(6);
+
+        // --- Customer Info ---
+        addText("CUSTOMER INFORMATION", 10, true, [27, 107, 58]);
+        addSpacer(2);
+        addField("Customer Name:", data.customerName);
+        addField("Phone:", data.phoneNumber);
+        addField("Address:", data.customerAddress);
+        addField("Email:", data.emailAddress);
+        addField("Location of Services:", data.locationOfServices);
+
+        if (signingData.contractType === "insurance") {
+          addField("Date of Loss:", data.dateOfLoss);
+          addField("Cause of Loss:", data.causeOfLoss);
+          addField("Insurance Carrier:", data.insuranceCarrier);
+          addField("Policy Number:", data.policyNumber);
+          addField("Claim Number:", data.claimNumber);
+          addField("Adjuster Name:", data.adjusterName);
+          addField("Adjuster Phone:", data.adjusterPhone);
+          addField("Adjuster Email:", data.adjusterEmail);
+        }
+
+        addField("Scope of Services:", data.scopeOfServices);
+        if (data.additionalServices) addField("Additional Services:", data.additionalServices);
+        if (data.contractPrice) addField("Price:", data.contractPrice);
+        if (data.equipmentRequired) addField("Equipment Required:", data.equipmentRequired);
+        addField("Estimated Timeframe:", data.estimatedTimeframe);
+
+        addSpacer(6);
+        addLine();
+        addSpacer(3);
+
+        // --- Legal Sections ---
+        const legalKeys = [
+          ["SCOPE OF THE WORK, TERMS AND PAYMENT", "scopeTerms"],
+          ["LIEN", "lien"],
+          ["DELIVERY OF THE PROPERTY", "deliveryOfProperty"],
+          ["PERMITS", "permits"],
+          ["PROPERTY LINES AND RESTRICTIONS", "propertyLines"],
+          ["INHERENT HAZARDS AND RISKS", "inherentHazards"],
+          ["EXPENSES FOR UNUSUAL OR UNANTICIPATED CONDITIONS", "unusualExpenses"],
+          ["PERFORMANCE OF THE WORK", "performanceOfWork"],
+          ["TARPS", "tarps"],
+          ["NO LIABILITY", "noLiability"],
+          ["ACT OF GOD", "actOfGod"],
+          ["INDEMNIFICATION", "indemnification"],
+          ["LIMITATION OF RECOVERY", "limitationOfRecovery"],
+          ["ELECTRONIC COMMUNICATIONS", "electronicComms"],
+          ["SEVERABILITY AND INTERPRETATION", "severability"],
+          ["AUTHORITY AND CONSENT", "authority"]
+        ];
+
+        for (const [title, key] of legalKeys) {
+          addSpacer(2);
+          addText(title, 9, true, [27, 107, 58]);
+          addSpacer(1);
+          // Strip HTML tags from the legal text
+          const raw = (LEGAL_SECTIONS[key] || "").replace(/<[^>]*>/g, "").trim();
+          // Remove the title prefix that's embedded in the text
+          const cleanText = raw.replace(/^[A-Z\s,&:]+:\s*/, "");
+          addText(cleanText, 8.5, false);
+          addSpacer(3);
+        }
+
+        // --- Rate Schedule ---
+        if (data.rates && data.rates.length) {
+          const selected = data.rates.filter(r => r.selected);
+          if (selected.length) {
+            addSpacer(4);
+            addLine();
+            addSpacer(2);
+            addText("RATE SCHEDULE", 11, true, [27, 107, 58]);
+            addSpacer(1);
+            addText("All rates are an eight (8) hour minimum as is customary in the industry. Normal working hours are 9:00 AM to 5:00 PM.", 8.5, false, [108, 117, 125]);
+            addSpacer(4);
+
+            // Table header
+            checkPage(10);
+            pdf.setFillColor(27, 107, 58);
+            pdf.rect(margin, y - 1, cw, 7, "F");
+            pdf.setFontSize(8.5);
+            pdf.setFont("helvetica", "bold");
+            pdf.setTextColor(255, 255, 255);
+            pdf.text("#", margin + 2, y + 3.5);
+            pdf.text("Item / Service", margin + 14, y + 3.5);
+            pdf.text("Price", pageW - margin - 2, y + 3.5, { align: "right" });
+            y += 8;
+
+            let total = 0;
+            pdf.setFont("helvetica", "normal");
+            pdf.setTextColor(33, 37, 41);
+            for (const r of selected) {
+              const price = parseFloat(r.price) || 0;
+              total += price;
+              checkPage(7);
+              pdf.setFontSize(8.5);
+              pdf.text(String(r.id) + ".", margin + 2, y);
+              const qtyText = r.qty ? ` (${r.qty} people)` : "";
+              const nameLines = pdf.splitTextToSize(r.name + qtyText, cw - 50);
+              for (let i = 0; i < nameLines.length; i++) {
+                pdf.text(nameLines[i], margin + 14, y + (i * 4));
+              }
+              pdf.text("$" + price.toFixed(2), pageW - margin - 2, y, { align: "right" });
+              y += Math.max(nameLines.length * 4, 5) + 2;
+              pdf.setDrawColor(220, 220, 220);
+              pdf.setLineWidth(0.2);
+              pdf.line(margin, y - 1, pageW - margin, y - 1);
+            }
+            // Total row
+            checkPage(10);
+            pdf.setFillColor(240, 247, 242);
+            pdf.rect(margin, y, cw, 7, "F");
+            pdf.setFont("helvetica", "bold");
+            pdf.setTextColor(27, 107, 58);
+            pdf.text("TOTAL", margin + 14, y + 4.5);
+            pdf.text("$" + total.toFixed(2), pageW - margin - 2, y + 4.5, { align: "right" });
+            y += 10;
+          }
+        }
+
+        // --- Signature area ---
+        if (isSigned) {
+          addSpacer(6);
+          addLine();
+          addSpacer(4);
+          addText("ELECTRONIC SIGNATURE", 11, true, [27, 107, 58]);
+          addSpacer(2);
+          addText("This contract was electronically signed.", 9, false);
+          const signDate = document.getElementById("customerSignDate")
+            ? document.getElementById("customerSignDate").value
+            : new Date().toLocaleDateString();
+          addField("Date Signed:", signDate);
+          addSpacer(4);
+
+          // Embed signature images if available
+          try {
+            if (customerInitialPad && !customerInitialPad.isEmpty()) {
+              addText("Initials:", 9, true);
+              addSpacer(1);
+              checkPage(18);
+              pdf.addImage(customerInitialPad.toDataURL(), "PNG", margin, y, 40, 15);
+              y += 18;
+            }
+          } catch (e) { /* skip if not available */ }
+
+          try {
+            if (customerSignaturePad && !customerSignaturePad.isEmpty()) {
+              addText("Signature:", 9, true);
+              addSpacer(1);
+              checkPage(24);
+              pdf.addImage(customerSignaturePad.toDataURL(), "PNG", margin, y, 60, 20);
+              y += 24;
+            }
+          } catch (e) { /* skip if not available */ }
+        }
+
+        // --- Footer ---
+        addSpacer(8);
+        addCenteredText("Big Bass Tree Services, LLC — Thank you for your business.", 8, false, [108, 117, 125]);
+
+        const label = isSigned ? "Signed" : "Contract";
+        const safeName = (data.customerName || "customer").replace(/[^a-zA-Z0-9]/g, "_");
+        pdf.save(`BigBass_${label}_${safeName}.pdf`);
+        showToast("PDF downloaded successfully.");
       }
     </script>
   </body>
