@@ -29,6 +29,12 @@
           </div>
         </div>
         <div class="header-contact">
+          <div class="nav-buttons" id="dashboardNav" style="display:none">
+            <button type="button" class="btn-nav active" onclick="showView('contract')" id="navNewContract">New Contract</button>
+            <button type="button" class="btn-nav" onclick="showView('contracts')" id="navContracts">Contracts</button>
+            <button type="button" class="btn-nav" onclick="showView('invoices')" id="navInvoices">Invoices</button>
+          </div>
+          <a href="/" class="back-to-site">← Back to Website</a>
           <span>1726 Lyman Lane, Clinton, LA 70722</span>
         </div>
         <div class="header-auth">
@@ -1058,33 +1064,48 @@
           </div>
         </div>
 
-        <div class="form-actions">
+        <div class="form-actions step4-actions">
           <button type="button" class="btn btn-secondary" onclick="goToStep(3)">
             Back
           </button>
-          <button
-            type="button"
-            class="btn btn-primary btn-sign"
-            onclick="submitContract()"
-          >
-            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
-              <path
-                d="M9 12l2 2 4-4"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="2"
-              />
-            </svg>
-            Submit Signed Contract
-          </button>
+          <div class="step4-submit-options">
+            <button
+              type="button"
+              class="btn btn-primary btn-sign"
+              onclick="submitContract()"
+            >
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path
+                  d="M9 12l2 2 4-4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+              Submit Signed Contract
+            </button>
+            <span class="step4-divider">or</span>
+            <button
+              type="button"
+              class="btn btn-outline btn-send-remote"
+              id="sendForSignatureBtn"
+              onclick="sendForSignature()"
+            >
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Send for Remote Signature
+            </button>
+          </div>
         </div>
       </section>
 
@@ -1143,6 +1164,103 @@
         </div>
       </section>
     </main>
+
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== CONTRACT DASHBOARD ===== -->
+    <section class="dashboard-section" id="contractDashboard">
+      <div class="dashboard-header">
+        <h2>Contracts</h2>
+        <div class="dashboard-controls">
+          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="contractSearch" oninput="filterContracts()" />
+          <select class="dashboard-filter" id="contractStatusFilter" onchange="filterContracts()">
+            <option value="">All Statuses</option>
+            <option value="sent">Sent</option>
+            <option value="viewed">Viewed</option>
+            <option value="signed">Signed</option>
+          </select>
+          <select class="dashboard-filter" id="contractTypeFilter" onchange="filterContracts()">
+            <option value="">All Types</option>
+            <option value="insurance">Insurance</option>
+            <option value="general">General</option>
+          </select>
+          <button type="button" class="btn-refresh" onclick="refreshContracts()">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="dashboard-stats" id="contractStats"></div>
+      <table class="dashboard-table" id="contractTable">
+        <thead>
+          <tr>
+            <th onclick="sortContracts('customerName')">Customer</th>
+            <th onclick="sortContracts('contractType')">Type</th>
+            <th onclick="sortContracts('status')">Status</th>
+            <th onclick="sortContracts('createdAt')">Created</th>
+            <th onclick="sortContracts('totalPrice')">Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="contractTableBody"></tbody>
+      </table>
+      <div class="dashboard-pagination" id="contractPagination"></div>
+      <div class="dashboard-empty" id="contractEmpty" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p>No contracts found.</p>
+      </div>
+    </section>
+
+    <!-- ===== INVOICE DASHBOARD ===== -->
+    <section class="dashboard-section" id="invoiceDashboard">
+      <div class="dashboard-header">
+        <h2>Invoices</h2>
+        <div class="dashboard-controls">
+          <input type="text" class="dashboard-search" placeholder="Search by customer name..." id="invoiceSearch" oninput="filterInvoices()" />
+          <select class="dashboard-filter" id="invoiceStatusFilter" onchange="filterInvoices()">
+            <option value="">All Statuses</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="paid">Paid</option>
+          </select>
+          <button type="button" class="btn-refresh" onclick="refreshInvoices()">
+            <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">
+              <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+      <div class="dashboard-stats" id="invoiceStats"></div>
+      <table class="dashboard-table" id="invoiceTable">
+        <thead>
+          <tr>
+            <th onclick="sortInvoices('customerName')">Customer</th>
+            <th onclick="sortInvoices('invoiceNumber')">Invoice #</th>
+            <th onclick="sortInvoices('invoiceDate')">Date</th>
+            <th onclick="sortInvoices('dueDate')">Due Date</th>
+            <th onclick="sortInvoices('total')">Total</th>
+            <th onclick="sortInvoices('status')">Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="invoiceTableBody"></tbody>
+      </table>
+      <div class="dashboard-pagination" id="invoicePagination"></div>
+      <div class="dashboard-empty" id="invoiceEmpty" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p>No invoices found.</p>
+      </div>
+    </section>
 
     <!-- ===== INVOICE PANEL ===== -->
     <section class="step-panel invoice-panel-section" id="invoicePanel">
@@ -1408,7 +1526,7 @@
     </footer>
 
     <!-- Toast notification -->
-    <div class="toast" id="toast"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <!-- Fullscreen Signature Modal -->
     <div class="fullscreen-sign-overlay" id="fullscreenSignOverlay">
@@ -1572,7 +1690,7 @@
     </aside>
 
     <!-- Login Modal -->
-    <div class="login-overlay" id="loginOverlay">
+    <div class="login-overlay" id="loginOverlay" role="dialog" aria-modal="true" aria-label="Admin Sign In">
       <div class="login-modal">
         <button
           type="button"
@@ -1647,6 +1765,7 @@
     <script src="js/contracts.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/invoices.js"></script>
+    <script src="js/dashboard.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

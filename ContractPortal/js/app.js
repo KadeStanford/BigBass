@@ -586,7 +586,7 @@ function gatherRates() {
 }
 
 // ===== SUBMIT =====
-function submitContract() {
+async function submitContract() {
   // Validate signature and initials
   if (!initialPadInstance || initialPadInstance.isEmpty()) {
     showToast(
@@ -612,15 +612,238 @@ function submitContract() {
   localStorage.removeItem(AUTOSAVE_KEY);
   showToast("Contract submitted successfully!", "success");
 
+  // Gather data and generate PDF
+  const data = gatherFormData();
+  const pdfBlob = generatePDFBlob(data);
+
+  // Save to Firestore
+  try {
+    await saveContractToFirestore(data, "signed", pdfBlob);
+  } catch (e) {
+    console.warn("Firestore save failed:", e);
+  }
+
   // Send email copies if configured
   if (typeof emailContract === "function") {
     try {
-      const data = gatherFormData();
-      const pdfBlob = generatePDFBlob(data);
       emailContract(pdfBlob, data);
     } catch (e) {
       console.warn("Email sending failed:", e);
     }
+  }
+}
+
+// Save contract data to Firestore
+async function saveContractToFirestore(data, status, pdfBlob) {
+  if (typeof firebase === "undefined" || !firebase.apps.length) return null;
+
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+  if (!user) return null;
+
+  // Upload PDF to Storage and get URL
+  let pdfUrl = "";
+  if (pdfBlob) {
+    try {
+      const storage = firebase.storage();
+      const timestamp = Date.now();
+      const safeName = (data.customerName || "contract").replace(/[^a-zA-Z0-9]/g, "_");
+      const filePath = `contracts/${safeName}_${timestamp}.pdf`;
+      const snapshot = await storage.ref(filePath).put(pdfBlob, { contentType: "application/pdf" });
+      pdfUrl = await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      console.warn("PDF upload failed:", e);
+    }
+  }
+
+  // Capture signature data
+  const signatureData = status === "signed" ? {
+    signature: signaturePadInstance && !signaturePadInstance.isEmpty() ? signaturePadInstance.toDataURL() : null,
+    initials: initialPadInstance && !initialPadInstance.isEmpty() ? initialPadInstance.toDataURL() : null,
+    signedAt: new Date().toISOString(),
+    signatureDate: document.getElementById("signatureDate").value
+  } : null;
+
+  // Calculate total price from rates
+  let totalPrice = 0;
+  if (data.contractPrice) {
+    totalPrice = parseFloat(data.contractPrice.replace(/[^0-9.]/g, "")) || 0;
+  } else {
+    (data.rates || []).forEach(r => {
+      if (r.selected) {
+        const price = parseFloat(r.price) || 0;
+        const qty = parseFloat(r.qty) || 1;
+        totalPrice += price * qty;
+      }
+    });
+  }
+
+  const contractDoc = {
+    contractType: selectedContractType,
+    status: status,
+    customerName: data.customerName || "",
+    customerEmail: data.emailAddress || "",
+    customerPhone: data.phoneNumber || "",
+    customerAddress: data.customerAddress || "",
+    locationOfServices: data.locationOfServices || "",
+    estimatedTimeframe: data.estimatedTimeframe || "",
+    rates: data.rates || [],
+    totalPrice: totalPrice,
+    formData: data,
+    signatureData: signatureData,
+    pdfUrl: pdfUrl,
+    signedPdfUrl: status === "signed" ? pdfUrl : "",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdBy: user.uid,
+    createdByEmail: user.email
+  };
+
+  if (status === "signed") {
+    contractDoc.signedAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+  if (status === "sent") {
+    contractDoc.sentAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  const docRef = await db.collection("contracts").add(contractDoc);
+
+  // Clear dashboard cache so next load picks up the new contract
+  sessionStorage.removeItem("bigbass_contracts_cache");
+
+  return docRef.id;
+}
+
+// Send contract for remote customer signature
+async function sendForSignature() {
+  const data = gatherFormData();
+
+  if (!data.emailAddress) {
+    showToast("Customer email is required to send for signature.", "error");
+    return;
+  }
+  if (!data.customerName) {
+    showToast("Customer name is required.", "error");
+    return;
+  }
+
+  // Disable button to prevent double-submit
+  const btn = document.getElementById("sendForSignatureBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "Sending..."; }
+
+  try {
+    const db = firebase.firestore();
+    const user = firebase.auth().currentUser;
+    if (!user) { showToast("You must be signed in.", "error"); return; }
+
+    // Generate a signing token
+    const signingToken = crypto.randomUUID();
+
+    // Save contract to Firestore with status "sent"
+    const contractId = await saveContractToFirestore(data, "sent", null);
+    if (!contractId) { showToast("Failed to save contract.", "error"); return; }
+
+    // Update contract with signing token
+    await db.collection("contracts").doc(contractId).update({
+      signingToken: signingToken
+    });
+
+    // Write signing document for public (anonymous) access
+    const signingDoc = {
+      contractId: contractId,
+      contractType: selectedContractType,
+      status: "sent",
+      customerName: data.customerName,
+      customerEmail: data.emailAddress,
+      formData: data,
+      rates: data.rates || [],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection("signing").doc(signingToken).set(signingDoc);
+
+    // Compose signing URL
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, "");
+    const signingUrl = `${baseUrl}/sign.html?token=${signingToken}`;
+
+    // Move to completion step with signing info
+    goToStep(5);
+    localStorage.removeItem(AUTOSAVE_KEY);
+
+    // Update completion screen to show signing link
+    const completionScreen = document.querySelector("#step5 .completion-screen");
+    if (completionScreen) {
+      completionScreen.querySelector("h2").textContent = "Contract Sent for Signature!";
+      completionScreen.querySelector("p").innerHTML =
+        `A signing link has been sent to <strong>${escapeHtml(data.emailAddress)}</strong>. You can also copy the link below.`;
+
+      // Add signing link copy section
+      const actionsDiv = completionScreen.querySelector(".completion-actions");
+      const linkDiv = document.createElement("div");
+      linkDiv.className = "signing-link-box";
+      linkDiv.innerHTML = `
+        <input type="text" value="${escapeHtml(signingUrl)}" readonly class="signing-link-input" id="signingLinkInput" />
+        <button type="button" class="btn btn-secondary" onclick="copySigningLink()">Copy Link</button>
+      `;
+      actionsDiv.parentNode.insertBefore(linkDiv, actionsDiv);
+    }
+
+    // Send email with signing link
+    if (typeof emailjs !== "undefined" && EMAILJS_CONFIG.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY") {
+      try {
+        let companyEmail = "";
+        const settingsDoc = await db.collection("settings").doc("company").get();
+        if (settingsDoc.exists) {
+          companyEmail = settingsDoc.data().companyEmail || "";
+        }
+
+        const templateParams = {
+          to_name: data.customerName,
+          to_email: data.emailAddress,
+          company_email: companyEmail,
+          contract_type: selectedContractType === "insurance" ? "Insurance Services" : "General Services",
+          customer_name: data.customerName,
+          customer_email: data.emailAddress,
+          pdf_link: signingUrl,
+        };
+
+        await emailjs.send(
+          EMAILJS_CONFIG.serviceId,
+          EMAILJS_CONFIG.templateId,
+          templateParams,
+          EMAILJS_CONFIG.publicKey
+        );
+
+        if (companyEmail) {
+          await emailjs.send(
+            EMAILJS_CONFIG.serviceId,
+            EMAILJS_CONFIG.templateId,
+            { ...templateParams, to_email: companyEmail, to_name: "Big Bass Tree Services" },
+            EMAILJS_CONFIG.publicKey
+          );
+        }
+      } catch (e) {
+        console.warn("Email send failed:", e);
+      }
+    }
+
+    showToast("Contract sent for signature!", "success");
+  } catch (e) {
+    console.error("Send for signature failed:", e);
+    showToast("Failed to send contract. Please try again.", "error");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "Send for Remote Signature"; }
+  }
+}
+
+function copySigningLink() {
+  const input = document.getElementById("signingLinkInput");
+  if (input) {
+    navigator.clipboard.writeText(input.value).then(() => {
+      showToast("Signing link copied to clipboard!", "success");
+    }).catch(() => {
+      input.select();
+      document.execCommand("copy");
+      showToast("Signing link copied!", "success");
+    });
   }
 }
 

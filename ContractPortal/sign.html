@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Contract — Big Bass Tree Services, LLC</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="js/logo-data.js"></script>
+    <style>
+      body { font-family: 'Inter', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+      .sign-header {
+        background: #1B6B3A;
+        color: #fff;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .sign-header img { width: 40px; height: 40px; object-fit: contain; }
+      .sign-header h1 { font-size: 1.1rem; margin: 0; font-weight: 700; }
+      .sign-header span { font-size: 0.8rem; opacity: 0.8; }
+
+      .sign-container {
+        max-width: 900px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+
+      .sign-loading {
+        text-align: center;
+        padding: 80px 24px;
+        color: #868e96;
+      }
+      .sign-loading .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid #dee2e6;
+        border-top-color: #1B6B3A;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 16px;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      .sign-error {
+        text-align: center;
+        padding: 80px 24px;
+        color: #991b1b;
+      }
+      .sign-error h2 { font-size: 1.3rem; }
+      .sign-error p { color: #868e96; }
+
+      .sign-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+
+      .sign-card h2 {
+        font-size: 1.2rem;
+        color: #1B6B3A;
+        margin: 0 0 8px;
+      }
+
+      .sign-card p.subtitle {
+        color: #868e96;
+        font-size: 0.88rem;
+        margin: 0 0 20px;
+      }
+
+      .contract-preview {
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 24px;
+        max-height: 500px;
+        overflow-y: auto;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        line-height: 1.65;
+      }
+
+      .sign-signature-section {
+        margin-top: 24px;
+      }
+
+      .sign-sig-block {
+        margin-bottom: 24px;
+      }
+
+      .sign-sig-block h3 {
+        font-size: 1rem;
+        color: #212529;
+        margin: 0 0 6px;
+      }
+
+      .sign-sig-block p {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin: 0 0 12px;
+      }
+
+      .sign-canvas-wrap {
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 4px;
+        background: #fdfdfd;
+        margin-bottom: 8px;
+      }
+
+      .sign-canvas {
+        width: 100%;
+        height: 120px;
+        display: block;
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      .sign-canvas.initial-canvas {
+        height: 80px;
+        max-width: 300px;
+      }
+
+      .sign-pad-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .sign-pad-actions button {
+        padding: 4px 12px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 0.8rem;
+        cursor: pointer;
+        color: #495057;
+      }
+
+      .sign-pad-actions button:hover {
+        background: #f0f4f0;
+        border-color: #1B6B3A;
+        color: #1B6B3A;
+      }
+
+      .sign-date-group {
+        margin-top: 16px;
+      }
+
+      .sign-date-group label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 4px;
+      }
+
+      .sign-date-group input {
+        padding: 8px 14px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 0.88rem;
+      }
+
+      .sign-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .sign-actions .btn-sign-submit {
+        background: #1B6B3A;
+        color: #fff;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s;
+      }
+
+      .sign-actions .btn-sign-submit:hover { background: #155d32; }
+      .sign-actions .btn-sign-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+      .sign-complete {
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .sign-complete .check-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px;
+      }
+
+      .sign-complete h2 { color: #1B6B3A; font-size: 1.4rem; margin: 0 0 8px; }
+      .sign-complete p { color: #6c757d; font-size: 0.95rem; }
+
+      /* Reuse contract-document styles from portal */
+      .contract-preview .company-info,
+      .contract-preview .info-grid,
+      .contract-preview .info-row,
+      .contract-preview .info-label,
+      .contract-preview .field-value,
+      .contract-preview .legal-section,
+      .contract-preview .section-title,
+      .contract-preview .rate-table { font-size: inherit; }
+    </style>
+  </head>
+  <body>
+    <header class="sign-header">
+      <img src="logo.png" alt="Big Bass Logo" />
+      <div>
+        <h1>Big Bass Tree Services, LLC</h1>
+        <span>Contract Signing</span>
+      </div>
+    </header>
+
+    <div class="sign-container">
+      <!-- Loading state -->
+      <div id="signLoading" class="sign-loading">
+        <div class="spinner"></div>
+        <p>Loading contract...</p>
+      </div>
+
+      <!-- Error state -->
+      <div id="signError" class="sign-error" style="display:none">
+        <h2>Contract Not Found</h2>
+        <p>This signing link may have expired or is invalid. Please contact Big Bass Tree Services for assistance.</p>
+      </div>
+
+      <!-- Already signed state -->
+      <div id="signAlready" class="sign-card" style="display:none">
+        <div class="sign-complete">
+          <svg class="check-icon" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#E8F5E9" stroke="#1B6B3A" stroke-width="3"/>
+            <path d="M24 40 L34 50 L56 28" stroke="#1B6B3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2>Contract Already Signed</h2>
+          <p>This contract has already been signed. Thank you!</p>
+        </div>
+      </div>
+
+      <!-- Main signing form -->
+      <div id="signForm" style="display:none">
+        <div class="sign-card">
+          <h2>Review Your Contract</h2>
+          <p class="subtitle">Please review the full contract below, then sign at the bottom.</p>
+          <div class="contract-preview" id="contractPreview">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="sign-card">
+          <h2>Sign Contract</h2>
+          <div class="sign-signature-section">
+            <div class="sign-sig-block">
+              <h3>Right to Cancel — Initial Here</h3>
+              <p>By initialing below, you acknowledge the three day right to cancel as set forth in La. R.S. 9:3538 (E).</p>
+              <div class="sign-canvas-wrap">
+                <canvas id="customerInitialPad" class="sign-canvas initial-canvas"></canvas>
+              </div>
+              <div class="sign-pad-actions">
+                <button type="button" onclick="clearCustomerPad('initial')">Clear</button>
+              </div>
+            </div>
+
+            <div class="sign-sig-block">
+              <h3>Customer Signature</h3>
+              <p>By signing below, you agree to the scope of work and the terms set forth in this contract.</p>
+              <div class="sign-canvas-wrap">
+                <canvas id="customerSignaturePad" class="sign-canvas"></canvas>
+              </div>
+              <div class="sign-pad-actions">
+                <button type="button" onclick="clearCustomerPad('signature')">Clear</button>
+              </div>
+              <div class="sign-date-group">
+                <label for="customerSignDate">Date</label>
+                <input type="date" id="customerSignDate" />
+              </div>
+            </div>
+          </div>
+
+          <div class="sign-actions">
+            <button type="button" class="btn-sign-submit" id="customerSubmitBtn" onclick="submitCustomerSignature()">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              Submit Signed Contract
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div id="signSuccess" class="sign-card" style="display:none">
+        <div class="sign-complete">
+          <svg class="check-icon" viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="38" fill="#E8F5E9" stroke="#1B6B3A" stroke-width="3"/>
+            <path d="M24 40 L34 50 L56 28" stroke="#1B6B3A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2>Contract Signed Successfully!</h2>
+          <p>Thank you for signing. A confirmation email will be sent to your email address.</p>
+          <button type="button" class="btn-sign-submit" style="margin-top:16px" onclick="downloadSignedPDF()">
+            Download Signed Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/contracts.js"></script>
+    <script>
+      // ===== Customer Signing Page =====
+      let customerInitialPad = null;
+      let customerSignaturePad = null;
+      let signingData = null;
+      let signingToken = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        // Set today's date
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("customerSignDate").value = today;
+
+        // Get token from URL
+        const params = new URLSearchParams(window.location.search);
+        signingToken = params.get("token");
+
+        if (!signingToken) {
+          showSignError();
+          return;
+        }
+
+        try {
+          // Init Firebase
+          firebase.initializeApp(firebaseConfig);
+
+          // Sign in anonymously
+          await firebase.auth().signInAnonymously();
+
+          // Load signing document
+          const db = firebase.firestore();
+          const doc = await db.collection("signing").doc(signingToken).get();
+
+          if (!doc.exists) {
+            showSignError();
+            return;
+          }
+
+          signingData = doc.data();
+
+          // Check if already signed
+          if (signingData.status === "signed") {
+            document.getElementById("signLoading").style.display = "none";
+            document.getElementById("signAlready").style.display = "block";
+            return;
+          }
+
+          // Mark as viewed
+          if (signingData.status === "sent") {
+            await db.collection("signing").doc(signingToken).update({ status: "viewed" });
+            // Also update the main contract
+            if (signingData.contractId) {
+              await db.collection("contracts").doc(signingData.contractId).update({
+                status: "viewed",
+                viewedAt: firebase.firestore.FieldValue.serverTimestamp()
+              }).catch(() => {});
+            }
+          }
+
+          // Render contract preview
+          renderContractPreview(signingData);
+
+          // Initialize signature pads
+          initSignaturePads();
+
+          // Show the form
+          document.getElementById("signLoading").style.display = "none";
+          document.getElementById("signForm").style.display = "block";
+
+        } catch (e) {
+          console.error("Signing page error:", e);
+          showSignError();
+        }
+      });
+
+      function showSignError() {
+        document.getElementById("signLoading").style.display = "none";
+        document.getElementById("signError").style.display = "block";
+      }
+
+      function renderContractPreview(data) {
+        const preview = document.getElementById("contractPreview");
+        const formData = data.formData || {};
+
+        if (data.contractType === "insurance") {
+          preview.innerHTML = renderInsuranceContract(formData);
+        } else {
+          preview.innerHTML = renderGeneralContract(formData);
+        }
+      }
+
+      function initSignaturePads() {
+        const initialCanvas = document.getElementById("customerInitialPad");
+        const signatureCanvas = document.getElementById("customerSignaturePad");
+
+        // Size canvases
+        function sizeCanvas(canvas) {
+          const rect = canvas.getBoundingClientRect();
+          const ratio = Math.max(window.devicePixelRatio || 1, 1);
+          canvas.width = rect.width * ratio;
+          canvas.height = rect.height * ratio;
+          const ctx = canvas.getContext("2d");
+          ctx.scale(ratio, ratio);
+          // Fill with light background
+          ctx.fillStyle = "#fdfdfd";
+          ctx.fillRect(0, 0, rect.width, rect.height);
+        }
+
+        sizeCanvas(initialCanvas);
+        sizeCanvas(signatureCanvas);
+
+        customerInitialPad = new SignaturePad(initialCanvas, {
+          minWidth: 1, maxWidth: 2.5, penColor: "#1a1a2e"
+        });
+
+        customerSignaturePad = new SignaturePad(signatureCanvas, {
+          minWidth: 1, maxWidth: 3, penColor: "#1a1a2e"
+        });
+
+        // Resize handler
+        window.addEventListener("resize", () => {
+          const iData = customerInitialPad.toData();
+          const sData = customerSignaturePad.toData();
+          sizeCanvas(initialCanvas);
+          sizeCanvas(signatureCanvas);
+          customerInitialPad.fromData(iData);
+          customerSignaturePad.fromData(sData);
+        });
+      }
+
+      function clearCustomerPad(type) {
+        if (type === "initial" && customerInitialPad) {
+          customerInitialPad.clear();
+        } else if (type === "signature" && customerSignaturePad) {
+          customerSignaturePad.clear();
+        }
+      }
+
+      async function submitCustomerSignature() {
+        // Validate
+        if (!customerInitialPad || customerInitialPad.isEmpty()) {
+          alert("Please provide your initials.");
+          return;
+        }
+        if (!customerSignaturePad || customerSignaturePad.isEmpty()) {
+          alert("Please provide your signature.");
+          return;
+        }
+        const signDate = document.getElementById("customerSignDate").value;
+        if (!signDate) {
+          alert("Please enter the date.");
+          return;
+        }
+
+        const btn = document.getElementById("customerSubmitBtn");
+        btn.disabled = true;
+        btn.textContent = "Submitting...";
+
+        try {
+          const db = firebase.firestore();
+
+          const signaturePayload = {
+            signature: customerSignaturePad.toDataURL(),
+            initials: customerInitialPad.toDataURL(),
+            signedAt: new Date().toISOString(),
+            signatureDate: signDate
+          };
+
+          // Update signing document
+          await db.collection("signing").doc(signingToken).update({
+            status: "signed",
+            signatureData: signaturePayload,
+            signedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          // Update main contract document
+          if (signingData.contractId) {
+            await db.collection("contracts").doc(signingData.contractId).update({
+              status: "signed",
+              signatureData: signaturePayload,
+              signedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(e => console.warn("Contract update failed:", e));
+          }
+
+          // Show success
+          document.getElementById("signForm").style.display = "none";
+          document.getElementById("signSuccess").style.display = "block";
+
+        } catch (e) {
+          console.error("Signature submission failed:", e);
+          alert("Failed to submit signature. Please try again.");
+          btn.disabled = false;
+          btn.textContent = "Submit Signed Contract";
+        }
+      }
+
+      function downloadSignedPDF() {
+        if (!signingData || !signingData.formData) return;
+
+        const data = signingData.formData;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF("p", "mm", "letter");
+
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 18;
+        const contentWidth = pageWidth - margin * 2;
+        let y = margin;
+
+        function addText(text, fontSize, isBold) {
+          doc.setFontSize(fontSize || 10);
+          doc.setFont("helvetica", isBold ? "bold" : "normal");
+          const lines = doc.splitTextToSize(text, contentWidth);
+          const lineHeight = fontSize ? fontSize * 0.45 : 4.5;
+          for (let i = 0; i < lines.length; i++) {
+            if (y > doc.internal.pageSize.getHeight() - margin) {
+              doc.addPage();
+              y = margin;
+            }
+            doc.text(lines[i], margin, y);
+            y += lineHeight;
+          }
+        }
+
+        // Header
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("SERVICES CONTRACT — SIGNED COPY", pageWidth / 2, y, { align: "center" });
+        y += 6;
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Big Bass Tree Services, LLC", pageWidth / 2, y, { align: "center" });
+        y += 4;
+        doc.text("1726 Lyman Lane, Clinton, LA 70722", pageWidth / 2, y, { align: "center" });
+        y += 8;
+
+        // Customer info
+        addText(`Customer: ${data.customerName || ""}`, 10, true);
+        addText(`Address: ${data.customerAddress || ""}`, 10, false);
+        addText(`Phone: ${data.phoneNumber || ""}`, 10, false);
+        addText(`Email: ${data.emailAddress || ""}`, 10, false);
+        y += 4;
+        addText("This contract has been electronically signed.", 10, true);
+        addText(`Signed on: ${document.getElementById("customerSignDate").value || new Date().toLocaleDateString()}`, 10, false);
+        y += 8;
+
+        addText("Thank you for choosing Big Bass Tree Services, LLC.", 10, false);
+
+        doc.save(`BigBass_SignedContract_${(data.customerName || "customer").replace(/[^a-zA-Z0-9]/g, "_")}.pdf`);
+      }
+    </script>
+  </body>
+</html>

@@ -15,6 +15,11 @@ function initFirebase() {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
+  // Persist auth across browser sessions
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => {
+    console.warn("Auth persistence error:", err);
+  });
+
   // Listen for auth state changes
   auth.onAuthStateChanged((user) => {
     currentUser = user;
@@ -25,11 +30,15 @@ function initFirebase() {
       document.getElementById('portalAuthGate').style.display = 'none';
       document.querySelector('.main-content').style.display = '';
       document.getElementById('progressBar').style.display = '';
+      // Show dashboard nav
+      if (typeof showDashboardNav === "function") showDashboardNav();
     } else {
       // Gate content behind login
       document.getElementById('portalAuthGate').style.display = 'flex';
       document.querySelector('.main-content').style.display = 'none';
       document.getElementById('progressBar').style.display = 'none';
+      // Hide dashboard nav and dashboards
+      if (typeof hideDashboardNav === "function") hideDashboardNav();
     }
   });
 }

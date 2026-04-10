@@ -37,6 +37,9 @@ function openInvoiceCreator() {
     .querySelectorAll(".step-panel")
     .forEach((p) => p.classList.remove("active"));
 
+  // Hide dashboards
+  document.querySelectorAll(".dashboard-section").forEach(s => s.classList.remove("active"));
+
   // Show the invoice panel
   document.getElementById("invoicePanel").classList.add("active");
 
@@ -761,6 +764,14 @@ function downloadInvoicePDF() {
   const fileName = `BigBass_Invoice_${data.invoiceNumber.replace(/[^a-zA-Z0-9-]/g, "_")}_${new Date().toISOString().split("T")[0]}.pdf`;
   doc.save(fileName);
   showToast("Invoice PDF downloaded!", "success");
+
+  // Save to Firestore
+  try {
+    const pdfBlob = doc.output("blob");
+    saveInvoiceToFirestore(data, pdfBlob);
+  } catch (e) {
+    console.warn("Invoice Firestore save failed:", e);
+  }
 }
 
 // ===== VALIDATE =====
@@ -903,4 +914,70 @@ function clearInvoice() {
   initInvoiceDefaults();
 
   showToast("Invoice cleared.", "success");
+}
+
+// ===== SAVE INVOICE TO FIRESTORE =====
+async function saveInvoiceToFirestore(data, pdfBlob) {
+  if (typeof firebase === "undefined" || !firebase.apps.length) return;
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const db = firebase.firestore();
+
+  // Upload PDF to Storage
+  let pdfUrl = "";
+  if (pdfBlob) {
+    try {
+      const storage = firebase.storage();
+      const timestamp = Date.now();
+      const safeName = (data.customerName || "invoice").replace(/[^a-zA-Z0-9]/g, "_");
+      const filePath = `invoices/${safeName}_${data.invoiceNumber || timestamp}.pdf`;
+      const snapshot = await storage.ref(filePath).put(pdfBlob, { contentType: "application/pdf" });
+      pdfUrl = await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      console.warn("Invoice PDF upload failed:", e);
+    }
+  }
+
+  // Calculate total
+  let subtotal = 0;
+  (data.lineItems || []).forEach(item => {
+    subtotal += item.amount || 0;
+  });
+  const tax = subtotal * ((data.taxRate || 0) / 100);
+  const total = subtotal + tax;
+
+  const invoiceDoc = {
+    invoiceNumber: data.invoiceNumber || "",
+    invoiceDate: data.invoiceDate || "",
+    dueDate: data.dueDate || "",
+    terms: data.terms || "",
+    customerName: data.customerName || "",
+    customerEmail: data.customerEmail || "",
+    customerPhone: data.customerPhone || "",
+    customerAddress: data.customerAddress || "",
+    jobLocation: data.jobLocation || "",
+    poNumber: data.poNumber || "",
+    lineItems: data.lineItems || [],
+    subtotal: subtotal,
+    taxRate: data.taxRate || 0,
+    taxAmount: tax,
+    total: total,
+    notes: data.notes || "",
+    status: "unpaid",
+    paidAt: null,
+    pdfUrl: pdfUrl,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    createdBy: user.uid,
+    createdByEmail: user.email
+  };
+
+  try {
+    await db.collection("invoices").add(invoiceDoc);
+    // Clear dashboard cache
+    sessionStorage.removeItem("bigbass_invoices_cache");
+  } catch (e) {
+    console.error("Failed to save invoice to Firestore:", e);
+  }
 }

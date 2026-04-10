@@ -38,8 +38,8 @@
     "image": "https://www.bigbasstreeservice.com/images/logo.png",
     "logo": "https://www.bigbasstreeservice.com/images/logo.png",
     "url": "https://www.bigbasstreeservice.com",
-    "telephone": "+1-555-123-4567",
-    "email": "info@bigbasstree.com",
+    "telephone": "+1-225-892-8382",
+    "email": "bigbasstrees@gmail.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "1726 Lyman Lane",
@@ -69,7 +69,8 @@
       }
     ],
     "sameAs": [
-      "https://www.facebook.com/bigbasstreeservicellc"
+      "https://www.facebook.com/bigbasstreeservicellc",
+      "https://www.instagram.com/bigbasstreeservicellc/"
     ],
     "priceRange": "$$",
     "description": "Professional tree removal, trimming, stump grinding, lot clearing, and emergency storm damage services in Clinton, LA and surrounding parishes. Licensed, insured, and trusted.",
@@ -153,6 +154,9 @@
 </head>
 <body>
 
+  <!-- Skip Navigation -->
+  <a href="#services" class="skip-link">Skip to main content</a>
+
   <!-- ============ NAVIGATION ============ -->
   <nav class="navbar" id="navbar">
     <div class="container nav-container">
@@ -169,7 +173,7 @@
         <li><a href="#testimonials" class="nav-link">Reviews</a></li>
         <li><a href="#contact" class="nav-link nav-cta">Get Free Estimate</a></li>
         <li>
-          <a href="/portal/" class="nav-link nav-admin" title="Admin Portal">
+          <a href="/portal/" class="nav-link nav-admin" title="Admin Portal" aria-label="Admin Portal">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v2"/><path d="M5 22h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"/><path d="M12 2a3 3 0 00-3 3v2h6V5a3 3 0 00-3-3z"/></svg>
           </a>
         </li>
@@ -180,13 +184,17 @@
   <!-- ============ HERO ============ -->
   <header class="hero" id="hero">
     <!-- Rotating background slideshow -->
-    <div class="hero-slideshow">
-      <div class="hero-slide active" style="background-image: url('images/hero-1.jpg')"></div>
-      <div class="hero-slide" style="background-image: url('images/hero-2.jpg')"></div>
-      <div class="hero-slide" style="background-image: url('images/hero-3.jpg')"></div>
-      <div class="hero-slide" style="background-image: url('images/hero-4.jpg')"></div>
-      <div class="hero-slide" style="background-image: url('images/hero-5.jpg')"></div>
+    <div class="hero-slideshow" role="img" aria-label="Slideshow of Big Bass Tree Service work photos">
+      <div class="hero-slide active" aria-hidden="true" style="background-image: url('images/hero-1.jpg')"></div>
+      <div class="hero-slide" aria-hidden="true" style="background-image: url('images/hero-2.jpg')"></div>
+      <div class="hero-slide" aria-hidden="true" style="background-image: url('images/hero-3.jpg')"></div>
+      <div class="hero-slide" aria-hidden="true" style="background-image: url('images/hero-4.jpg')"></div>
+      <div class="hero-slide" aria-hidden="true" style="background-image: url('images/hero-5.jpg')"></div>
     </div>
+    <button class="hero-slideshow-pause" id="slideshowPause" aria-label="Pause slideshow">
+      <svg class="pause-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      <svg class="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="5,3 19,12 5,21"/></svg>
+    </button>
     <div class="hero-overlay"></div>
     <div class="container hero-content">
       <div class="hero-badge" data-animate="fade-down">Licensed &amp; Fully Insured</div>
@@ -203,7 +211,7 @@
           Get Your Free Estimate
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="tel:+15551234567" class="btn btn-outline btn-lg">
+        <a href="tel:+12258928382" class="btn btn-outline btn-lg">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           Call Now
         </a>
@@ -405,43 +413,48 @@
     <div class="container">
       <div class="section-header" data-animate="fade-up">
         <span class="section-label">Portfolio</span>
-        <h2 class="section-title">Our Recent Work</h2>
+        <h2 class="section-title">Before &amp; After</h2>
         <p class="section-subtitle">See the quality and precision we bring to every project.</p>
       </div>
-      <div class="work-grid">
-        <div class="work-item work-large" data-animate="fade-up">
-          <img src="images/hero-5.jpg" alt="Large tree removal — crew behind massive felled trunk" class="work-image" loading="lazy">
-          <div class="work-overlay">
-            <h3>Complete Tree Removal</h3>
-            <p>Massive oak felled and removed safely</p>
+      <div class="before-after-grid">
+        <div class="ba-pair" data-animate="fade-up">
+          <div class="ba-image">
+            <span class="ba-label ba-before">Before</span>
+            <img src="images/pair1-1.jpeg" alt="Tree removal project before work" class="work-image" loading="lazy">
+          </div>
+          <div class="ba-image">
+            <span class="ba-label ba-after">After</span>
+            <img src="images/pair1-2.jpeg" alt="Tree removal project after work" class="work-image" loading="lazy">
           </div>
         </div>
-        <div class="work-item" data-animate="fade-up" data-delay="100">
-          <img src="images/hero-3.jpg" alt="Storm damage — fallen tree across property" class="work-image" loading="lazy">
-          <div class="work-overlay">
-            <h3>Storm Damage Cleanup</h3>
-            <p>Emergency response and debris removal</p>
+        <div class="ba-pair" data-animate="fade-up" data-delay="100">
+          <div class="ba-image">
+            <span class="ba-label ba-before">Before</span>
+            <img src="images/pair2-1.jpeg" alt="Lot clearing project before work" class="work-image" loading="lazy">
+          </div>
+          <div class="ba-image">
+            <span class="ba-label ba-after">After</span>
+            <img src="images/pair2-2.jpeg" alt="Lot clearing project after work" class="work-image" loading="lazy">
           </div>
         </div>
-        <div class="work-item" data-animate="fade-up" data-delay="200">
-          <img src="images/hero-4.jpg" alt="Tree crew with chainsaw at stump" class="work-image" loading="lazy">
-          <div class="work-overlay">
-            <h3>Stump Removal</h3>
-            <p>Complete stump grinding and site cleanup</p>
+        <div class="ba-pair" data-animate="fade-up" data-delay="200">
+          <div class="ba-image">
+            <span class="ba-label ba-before">Before</span>
+            <img src="images/pair3-1.jpeg" alt="Storm damage cleanup before work" class="work-image" loading="lazy">
+          </div>
+          <div class="ba-image">
+            <span class="ba-label ba-after">After</span>
+            <img src="images/pair3-2.jpeg" alt="Storm damage cleanup after work" class="work-image" loading="lazy">
           </div>
         </div>
-        <div class="work-item" data-animate="fade-up" data-delay="300">
-          <img src="images/hero-2.jpg" alt="Bucket truck extended into tall pine trees" class="work-image" loading="lazy">
-          <div class="work-overlay">
-            <h3>Bucket Truck Service</h3>
-            <p>Reaching the tallest trees safely</p>
+        <div class="ba-pair" data-animate="fade-up" data-delay="300">
+          <div class="ba-image">
+            <span class="ba-label ba-before">Before</span>
+            <img src="images/pair4-1.jpeg" alt="Tree trimming project before work" class="work-image" loading="lazy">
           </div>
-        </div>
-        <div class="work-item" data-animate="fade-up" data-delay="400">
-          <img src="images/hero-1.jpg" alt="Altec bucket truck on residential property" class="work-image" loading="lazy">
-          <div class="work-overlay">
-            <h3>Professional Equipment</h3>
-            <p>Commercial-grade fleet ready to serve</p>
+          <div class="ba-image">
+            <span class="ba-label ba-after">After</span>
+            <img src="images/pair4-2.jpeg" alt="Tree trimming project after work" class="work-image" loading="lazy">
           </div>
         </div>
       </div>
@@ -610,9 +623,9 @@
       <p class="cta-subtitle">Request your free, no-obligation estimate today. We'll come to you.</p>
       <div class="cta-actions">
         <a href="#contact" class="btn btn-white btn-lg">Get Free Estimate</a>
-        <a href="tel:+15551234567" class="btn btn-outline-white btn-lg">
+        <a href="tel:+12258928382" class="btn btn-outline-white btn-lg">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          (555) 123-4567
+          (225) 892-8382
         </a>
       </div>
     </div>
@@ -633,7 +646,7 @@
             </div>
             <div>
               <strong>Phone</strong>
-              <a href="tel:+15551234567">(555) 123-4567</a>
+              <a href="tel:+12258928382">(225) 892-8382</a>
             </div>
           </div>
           <div class="contact-detail">
@@ -642,7 +655,7 @@
             </div>
             <div>
               <strong>Email</strong>
-              <a href="mailto:info@bigbasstree.com">info@bigbasstree.com</a>
+              <a href="mailto:bigbasstrees@gmail.com">bigbasstrees@gmail.com</a>
             </div>
           </div>
           <div class="contact-detail">
@@ -666,7 +679,7 @@
             </div>
             <div class="form-group">
               <label for="contactPhone">Phone *</label>
-              <input type="tel" id="contactPhone" name="phone" required placeholder="(555) 123-4567">
+              <input type="tel" id="contactPhone" name="phone" required placeholder="(225) 892-8382">
             </div>
           </div>
           <div class="form-group">
@@ -710,10 +723,10 @@
             <a href="https://www.facebook.com/bigbasstreeservicellc" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
             </a>
-            <a href="#" aria-label="Instagram" class="social-link">
+            <a href="https://www.instagram.com/bigbasstreeservicellc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
             </a>
-            <a href="#" aria-label="Google" class="social-link">
+            <a href="https://www.google.com/maps/place/Big+Bass+Tree+Service,+LLC" target="_blank" rel="noopener noreferrer" aria-label="Google" class="social-link">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
             </a>
           </div>
@@ -744,12 +757,28 @@
         <div class="footer-links">
           <h4>Contact</h4>
           <ul>
-            <li><a href="tel:+15551234567">(555) 123-4567</a></li>
-            <li><a href="mailto:info@bigbasstree.com">info@bigbasstree.com</a></li>
+            <li><a href="tel:+12258928382">(225) 892-8382</a></li>
+            <li><a href="mailto:bigbasstrees@gmail.com">bigbasstrees@gmail.com</a></li>
+            <li><span>1726 Lyman Lane, Clinton, LA 70722</span></li>
             <li><span>Mon-Sat: 7AM - 7PM</span></li>
             <li><span>Emergency Service</span></li>
           </ul>
         </div>
+      </div>
+
+      <div class="footer-credentials">
+        <div class="credential-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Licensed Louisiana Arborist #2687
+        </div>
+        <div class="credential-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Fully Insured
+        </div>
+        <a href="https://www.bbb.org/us/la/clinton/profile/arborist/big-bass-tree-service-llc-0835-90041338" target="_blank" rel="noopener noreferrer" class="credential-item credential-bbb">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          BBB A+ Rated
+        </a>
       </div>
 
       <div class="footer-bottom">
@@ -770,13 +799,13 @@
             </span>
           </div>
         </div>
-        <p>&copy; 2026 Big Bass Tree Services, LLC. All rights reserved.</p>
+        <p>&copy; 2026 Big Bass Tree Services, LLC. All rights reserved. | Licensed Louisiana Arborist #2687</p>
       </div>
     </div>
   </footer>
 
   <!-- ============ FLOATING CALL BUTTON (Mobile) ============ -->
-  <a href="tel:+15551234567" class="floating-call" aria-label="Call Big Bass Tree Service">
+  <a href="tel:+12258928382" class="floating-call" aria-label="Call Big Bass Tree Service">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
     <span class="floating-call-text">Call Now</span>
   </a>
@@ -785,6 +814,12 @@
   <button class="back-to-top" id="backToTop" aria-label="Back to top">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
   </button>
+
+  <!-- ============ COOKIE CONSENT ============ -->
+  <div class="cookie-banner" id="cookieBanner" style="display:none" role="alert">
+    <p>This website uses cookies to ensure you get the best experience. <a href="privacy.html">Learn more</a></p>
+    <button class="btn btn-primary btn-sm" id="cookieAccept">Accept</button>
+  </div>
 
   <script src="js/main.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

@@ -17,11 +17,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const slides = document.querySelectorAll('.hero-slide');
   if (slides.length > 1) {
     let current = 0;
-    setInterval(() => {
+    let paused = false;
+    const pauseBtn = document.getElementById('slideshowPause');
+    const intervalId = setInterval(() => {
+      if (paused) return;
       slides[current].classList.remove('active');
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 5000);
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        paused = !paused;
+        pauseBtn.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+        pauseBtn.querySelector('.pause-icon').style.display = paused ? 'none' : '';
+        pauseBtn.querySelector('.play-icon').style.display = paused ? '' : 'none';
+      });
+    }
   }
 
 
@@ -203,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ── Gallery Lightbox ── */
-  const workImages = document.querySelectorAll('.work-item img');
+  const workImages = document.querySelectorAll('.ba-image img, .work-item img');
   if (workImages.length) {
     // Create lightbox
     const lightbox = document.createElement('div');
@@ -236,7 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     workImages.forEach((img, i) => {
-      img.closest('.work-item').addEventListener('click', () => openLightbox(i));
+      const clickTarget = img.closest('.ba-image') || img.closest('.work-item');
+      if (clickTarget) clickTarget.addEventListener('click', () => openLightbox(i));
     });
 
     lbClose.addEventListener('click', closeLightbox);
@@ -284,5 +297,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
     progressBar.style.width = progress + '%';
   }, { passive: true });
+
+
+  /* ── Cookie Consent Banner ── */
+  const cookieBanner = document.getElementById('cookieBanner');
+  const cookieAccept = document.getElementById('cookieAccept');
+  if (cookieBanner && cookieAccept && !localStorage.getItem('cookieConsent')) {
+    cookieBanner.style.display = 'flex';
+    cookieAccept.addEventListener('click', () => {
+      localStorage.setItem('cookieConsent', '1');
+      cookieBanner.style.display = 'none';
+    });
+  }
 
 });

@@ -1,9 +1,21 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Contracts folder — anyone can upload, authenticated users can read/list
+    // Contracts folder — authenticated users can upload, anyone can read/download
     match /contracts/{fileName} {
-      allow write: if true;
+      allow write: if request.auth != null;
+      allow read: if true;
+    }
+
+    // Invoices folder — authenticated users only
+    match /invoices/{fileName} {
+      allow write: if request.auth != null;
+      allow read: if true;
+    }
+
+    // Signed contracts folder — any authenticated user (including anonymous) can write
+    match /signed/{fileName} {
+      allow write: if request.auth != null;
       allow read: if true;
     }
 
