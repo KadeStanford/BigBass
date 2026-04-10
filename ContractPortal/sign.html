@@ -759,6 +759,23 @@
             }).catch(e => console.warn("Contract update failed:", e));
           }
 
+          // Send confirmation email to customer
+          if (typeof emailjs !== "undefined" && EMAILJS_CONFIG.confirmationTemplateId) {
+            try {
+              await emailjs.send(
+                EMAILJS_CONFIG.serviceId,
+                EMAILJS_CONFIG.confirmationTemplateId,
+                {
+                  to_name: signingData.customerName,
+                  to_email: signingData.customerEmail,
+                  contract_type: signingData.contractType === "insurance" ? "Insurance Services" : "General Services",
+                }
+              );
+            } catch (emailErr) {
+              console.warn("Confirmation email failed:", emailErr);
+            }
+          }
+
           // Show success
           document.getElementById("signForm").style.display = "none";
           document.getElementById("signSuccess").style.display = "block";

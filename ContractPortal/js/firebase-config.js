@@ -26,4 +26,10 @@ const EMAILJS_CONFIG = {
   templateId: "template_p0k5tgu",
   signingTemplateId: "template_signing",
   contactTemplateId: "template_contact",
+  confirmationTemplateId: "template_confirmation",
 };
+
+// Initialize EmailJS SDK
+if (typeof emailjs !== "undefined") {
+  emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+}

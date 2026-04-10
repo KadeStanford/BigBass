@@ -2,16 +2,17 @@
   ============================================================
   Big Bass Tree Services — EmailJS Templates Reference
   ============================================================
-  This file contains the HTML for all 3 EmailJS templates.
+  This file contains the HTML for all 4 EmailJS templates.
   Copy each section into the corresponding template in EmailJS Dashboard.
 
   IMPORTANT: When pasting into EmailJS, copy ONLY the HTML starting
   from <!DOCTYPE html> to </html> for each template. Do NOT include
   the <!-- comment headers -->.
 
-  Template 1: "Contract Signed"   → template_p0k5tgu  (existing — update)
-  Template 2: "Sign Your Contract" → template_signing  (create new)
-  Template 3: "Contact Form"       → template_contact  (create new)
+  Template 1: "Contract Signed"        → template_p0k5tgu       (existing — update)
+  Template 2: "Sign Your Contract"     → template_signing       (create new)
+  Template 3: "Contact Form"           → template_contact       (create new)
+  Template 4: "Signature Confirmation" → template_confirmation  (create new)
 
   Logo: Uses EmailJS static attachment "logo-number.png" via cid:logo-number.png
   IMPORTANT: Upload the logo as a Static Attachment in EACH template in EmailJS Dashboard.
@@ -351,6 +352,106 @@
               <p style="margin:0 0 6px;font-size:14px;color:#ffffff;font-weight:700;">Big Bass Tree Service, LLC</p>
               <p style="margin:0 0 4px;font-size:12px;color:#aaaaaa;">1726 Lyman Lane, Clinton, LA 70722</p>
               <p style="margin:0;font-size:11px;color:#666666;">Submitted via bigbasstrees.com contact form</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+
+<!-- ==============================
+     TEMPLATE 4: SIGNATURE CONFIRMATION
+     EmailJS Template ID: template_confirmation
+     Parameters: to_name, to_email, contract_type
+     ============================== -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background-color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#e8e8e8;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.12);">
+          <!-- Logo Header -->
+          <tr>
+            <td style="background-color:#1a1a2e;padding:28px 40px 20px;text-align:center;">
+              <img src="cid:logo-number.png" alt="Big Bass Tree Service" width="160" height="160" style="display:block;margin:0 auto;width:160px;height:auto;max-width:100%;">
+            </td>
+          </tr>
+          <!-- Green Accent Bar -->
+          <tr>
+            <td style="background:linear-gradient(90deg,#3bb54a 0%,#5ec269 50%,#3bb54a 100%);height:5px;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+          <!-- Status Badge -->
+          <tr>
+            <td align="center" style="padding:28px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#d1fae5;border:2px solid #3bb54a;border-radius:24px;padding:8px 22px;">
+                    <span style="font-size:14px;font-weight:700;color:#065f46;letter-spacing:0.5px;">&#10004; SIGNATURE CONFIRMED</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- Body -->
+          <tr>
+            <td style="padding:24px 40px 28px;">
+              <p style="margin:0 0 16px;font-size:16px;color:#333333;line-height:1.7;">Hello <strong style="color:#1a1a2e;">{{to_name}}</strong>,</p>
+              <p style="margin:0 0 24px;font-size:16px;color:#333333;line-height:1.7;">Thank you for signing your <strong style="color:#1a1a2e;">{{contract_type}}</strong> contract with Big Bass Tree Service. Your signature has been received and recorded successfully.</p>
+              <!-- Confirmation Card -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="border-radius:10px;overflow:hidden;border:1px solid #e0e0e0;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background-color:#1a1a2e;padding:10px 20px;">
+                          <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:1px;">What Happens Next</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:16px 20px;background-color:#f8f9fa;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding:8px 0;font-size:14px;color:#333333;line-height:1.6;">&#9989; Your signature has been securely recorded</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:8px 0;font-size:14px;color:#333333;line-height:1.6;">&#128196; A finalized copy of the contract will be sent to you</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:8px 0;font-size:14px;color:#333333;line-height:1.6;">&#128222; Our team will be in touch to schedule your service</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <!-- Contact Info -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#f0fdf4;border-left:4px solid #3bb54a;border-radius:0 8px 8px 0;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#1a1a2e;">Questions?</p>
+                    <p style="margin:0;font-size:13px;color:#555555;line-height:1.6;">Feel free to reach out at <a href="tel:2258928382" style="color:#1a1a2e;font-weight:600;text-decoration:none;">(225) 892-8382</a> or <a href="mailto:bigbasstrees@gmail.com" style="color:#2563eb;">bigbasstrees@gmail.com</a> if you have any questions about your contract or upcoming service.</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#1a1a2e;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 6px;font-size:14px;color:#ffffff;font-weight:700;">Big Bass Tree Service, LLC</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#aaaaaa;">1726 Lyman Lane, Clinton, LA 70722</p>
+              <p style="margin:0 0 12px;font-size:12px;color:#aaaaaa;">(225) 892-8382 &bull; bigbasstrees@gmail.com</p>
+              <p style="margin:0;font-size:11px;color:#666666;">This is an automated message. Please do not reply directly.</p>
             </td>
           </tr>
         </table>
