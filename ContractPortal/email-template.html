@@ -5,9 +5,15 @@
   This file contains the HTML for all 3 EmailJS templates.
   Copy each section into the corresponding template in EmailJS Dashboard.
 
+  IMPORTANT: When pasting into EmailJS, copy ONLY the HTML starting
+  from <!DOCTYPE html> to </html> for each template. Do NOT include
+  the <!-- comment headers -->.
+
   Template 1: "Contract Signed"   → template_p0k5tgu  (existing — update)
   Template 2: "Sign Your Contract" → template_signing  (create new)
   Template 3: "Contact Form"       → template_contact  (create new)
+
+  Logo URL: https://www.bigbasstreeservice.com/images/logo.png
   ============================================================
 -->
 
@@ -22,37 +28,66 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#e8e8e8;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-          <!-- Header -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.12);">
+          <!-- Logo Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a3a1a 0%,#2d5a2d 50%,#1a3a1a 100%);padding:32px 40px;text-align:center;">
-              <h1 style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Big Bass Tree Services</h1>
-              <p style="margin:8px 0 0;font-size:13px;color:#a8d5a8;letter-spacing:1px;text-transform:uppercase;">Contract Document</p>
+            <td style="background-color:#1a1a2e;padding:28px 40px 20px;text-align:center;">
+              <img src="https://www.bigbasstreeservice.com/images/logo.png" alt="Big Bass Tree Service" width="160" height="160" style="display:block;margin:0 auto;width:160px;height:auto;max-width:100%;">
             </td>
+          </tr>
+          <!-- Green Accent Bar -->
+          <tr>
+            <td style="background:linear-gradient(90deg,#3bb54a 0%,#5ec269 50%,#3bb54a 100%);height:5px;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
           <!-- Status Badge -->
           <tr>
-            <td align="center" style="padding:24px 40px 0;">
-              <span style="display:inline-block;background:#dcfce7;color:#166534;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;letter-spacing:0.3px;">&#10003; Contract Signed</span>
+            <td align="center" style="padding:28px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#d4edda;border:2px solid #3bb54a;border-radius:24px;padding:8px 22px;">
+                    <span style="font-size:14px;font-weight:700;color:#1a6b2a;letter-spacing:0.5px;">&#10003; CONTRACT SIGNED</span>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <!-- Body -->
           <tr>
-            <td style="padding:24px 40px;">
-              <p style="margin:0 0 16px;font-size:16px;color:#374151;line-height:1.6;">Hello <strong style="color:#1a3a1a;">{{to_name}}</strong>,</p>
-              <p style="margin:0 0 24px;font-size:16px;color:#374151;line-height:1.6;">A <strong style="color:#1a3a1a;">{{contract_type}}</strong> contract has been signed and submitted by <strong style="color:#1a3a1a;">{{customer_name}}</strong>. The signed PDF is ready for your review.</p>
-              <!-- Contract Info Box -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <td style="padding:24px 40px 28px;">
+              <p style="margin:0 0 16px;font-size:16px;color:#333333;line-height:1.7;">Hello <strong style="color:#1a1a2e;">{{to_name}}</strong>,</p>
+              <p style="margin:0 0 28px;font-size:16px;color:#333333;line-height:1.7;">A <strong style="color:#1a1a2e;">{{contract_type}}</strong> contract has been signed and submitted by <strong style="color:#1a1a2e;">{{customer_name}}</strong>. The signed PDF is ready for your review.</p>
+              <!-- Contract Info Card -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
                 <tr>
-                  <td style="background-color:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px 20px;">
+                  <td style="border-radius:10px;overflow:hidden;border:1px solid #e0e0e0;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;width:120px;">Contract Type:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{contract_type}}</td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Customer:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{customer_name}}</td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Email:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{customer_email}}</td></tr>
+                      <tr>
+                        <td style="background-color:#1a1a2e;padding:10px 20px;">
+                          <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:1px;">Contract Details</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:16px 20px;background-color:#f8f9fa;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;width:110px;vertical-align:top;">Type:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{contract_type}}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Customer:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{customer_name}}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Email:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{customer_email}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
                     </table>
                   </td>
                 </tr>
@@ -60,25 +95,23 @@
               <!-- Download Button -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="center" style="padding:8px 0 12px;">
-                    <a href="{{pdf_link}}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#2d5a2d,#3a7a3a);color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;padding:14px 36px;border-radius:8px;letter-spacing:0.3px;box-shadow:0 4px 12px rgba(45,90,45,0.3);">
-                      Download Signed Contract
+                  <td align="center" style="padding:0 0 16px;">
+                    <a href="{{pdf_link}}" target="_blank" style="display:inline-block;background-color:#3bb54a;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700;padding:15px 44px;border-radius:6px;letter-spacing:0.5px;">
+                      &#128196; Download Signed Contract
                     </a>
                   </td>
                 </tr>
               </table>
-              <p style="margin:16px 0 0;font-size:12px;color:#9ca3af;text-align:center;line-height:1.5;">If the button doesn't work, copy and paste this link:<br><a href="{{pdf_link}}" style="color:#2d5a2d;word-break:break-all;font-size:12px;">{{pdf_link}}</a></p>
+              <p style="margin:0;font-size:12px;color:#aaaaaa;text-align:center;line-height:1.5;">If the button doesn't work, copy and paste this link:<br><a href="{{pdf_link}}" style="color:#3bb54a;word-break:break-all;font-size:12px;">{{pdf_link}}</a></p>
             </td>
           </tr>
-          <!-- Divider -->
-          <tr><td style="padding:0 40px;"><hr style="border:none;border-top:1px solid #e5e7eb;margin:0;"></td></tr>
           <!-- Footer -->
           <tr>
-            <td style="padding:24px 40px 32px;text-align:center;">
-              <p style="margin:0 0 4px;font-size:13px;color:#6b7280;font-weight:600;">Big Bass Tree Services, LLC</p>
-              <p style="margin:0 0 2px;font-size:12px;color:#9ca3af;">1726 Lyman Lane, Clinton, LA 70722</p>
-              <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;">(225) 892-8382 &bull; bigbasstrees@gmail.com</p>
-              <p style="margin:0;font-size:11px;color:#d1d5db;">This is an automated message. Please do not reply directly to this email.</p>
+            <td style="background-color:#1a1a2e;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 6px;font-size:14px;color:#ffffff;font-weight:700;">Big Bass Tree Service, LLC</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#aaaaaa;">1726 Lyman Lane, Clinton, LA 70722</p>
+              <p style="margin:0 0 12px;font-size:12px;color:#aaaaaa;">(225) 892-8382 &bull; bigbasstrees@gmail.com</p>
+              <p style="margin:0;font-size:11px;color:#666666;">This is an automated message. Please do not reply directly.</p>
             </td>
           </tr>
         </table>
@@ -100,36 +133,62 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#e8e8e8;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-          <!-- Header -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.12);">
+          <!-- Logo Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a3a1a 0%,#2d5a2d 50%,#1a3a1a 100%);padding:32px 40px;text-align:center;">
-              <h1 style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Big Bass Tree Services</h1>
-              <p style="margin:8px 0 0;font-size:13px;color:#a8d5a8;letter-spacing:1px;text-transform:uppercase;">Contract Document</p>
+            <td style="background-color:#1a1a2e;padding:28px 40px 20px;text-align:center;">
+              <img src="https://www.bigbasstreeservice.com/images/logo.png" alt="Big Bass Tree Service" width="160" height="160" style="display:block;margin:0 auto;width:160px;height:auto;max-width:100%;">
             </td>
+          </tr>
+          <!-- Blue Accent Bar -->
+          <tr>
+            <td style="background:linear-gradient(90deg,#2563eb 0%,#60a5fa 50%,#2563eb 100%);height:5px;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
           <!-- Status Badge -->
           <tr>
-            <td align="center" style="padding:24px 40px 0;">
-              <span style="display:inline-block;background:#dbeafe;color:#1e40af;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;letter-spacing:0.3px;">&#9997; Signature Required</span>
+            <td align="center" style="padding:28px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#dbeafe;border:2px solid #2563eb;border-radius:24px;padding:8px 22px;">
+                    <span style="font-size:14px;font-weight:700;color:#1e40af;letter-spacing:0.5px;">&#9997; SIGNATURE REQUIRED</span>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <!-- Body -->
           <tr>
-            <td style="padding:24px 40px;">
-              <p style="margin:0 0 16px;font-size:16px;color:#374151;line-height:1.6;">Hello <strong style="color:#1a3a1a;">{{to_name}}</strong>,</p>
-              <p style="margin:0 0 24px;font-size:16px;color:#374151;line-height:1.6;">Your <strong style="color:#1a3a1a;">{{contract_type}}</strong> contract with Big Bass Tree Services is ready for your review and signature. Please click the button below to review the contract details and sign electronically.</p>
-              <!-- Contract Info Box -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+            <td style="padding:24px 40px 28px;">
+              <p style="margin:0 0 16px;font-size:16px;color:#333333;line-height:1.7;">Hello <strong style="color:#1a1a2e;">{{to_name}}</strong>,</p>
+              <p style="margin:0 0 28px;font-size:16px;color:#333333;line-height:1.7;">Your <strong style="color:#1a1a2e;">{{contract_type}}</strong> contract with Big Bass Tree Service is ready for your review and signature. Please click the button below to review the contract details and sign electronically.</p>
+              <!-- Contract Info Card -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
                 <tr>
-                  <td style="background-color:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px 20px;">
+                  <td style="border-radius:10px;overflow:hidden;border:1px solid #e0e0e0;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;width:120px;">Contract Type:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{contract_type}}</td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Customer:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{customer_name}}</td></tr>
+                      <tr>
+                        <td style="background-color:#1a1a2e;padding:10px 20px;">
+                          <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:1px;">Contract Details</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:16px 20px;background-color:#f8f9fa;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;width:110px;vertical-align:top;">Type:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{contract_type}}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Customer:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{customer_name}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
                     </table>
                   </td>
                 </tr>
@@ -137,35 +196,32 @@
               <!-- Sign Button -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="center" style="padding:8px 0 12px;">
-                    <a href="{{signing_link}}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#ffffff;text-decoration:none;font-size:16px;font-weight:600;padding:14px 36px;border-radius:8px;letter-spacing:0.3px;box-shadow:0 4px 12px rgba(30,64,175,0.3);">
-                      Review &amp; Sign Contract
+                  <td align="center" style="padding:0 0 16px;">
+                    <a href="{{signing_link}}" target="_blank" style="display:inline-block;background-color:#2563eb;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700;padding:15px 44px;border-radius:6px;letter-spacing:0.5px;">
+                      &#9997; Review &amp; Sign Contract
                     </a>
                   </td>
                 </tr>
               </table>
-              <p style="margin:16px 0 0;font-size:12px;color:#9ca3af;text-align:center;line-height:1.5;">If the button doesn't work, copy and paste this link:<br><a href="{{signing_link}}" style="color:#1e40af;word-break:break-all;font-size:12px;">{{signing_link}}</a></p>
-              <!-- Trust / Security Notice -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
+              <p style="margin:0 0 24px;font-size:12px;color:#aaaaaa;text-align:center;line-height:1.5;">If the button doesn't work, copy and paste this link:<br><a href="{{signing_link}}" style="color:#2563eb;word-break:break-all;font-size:12px;">{{signing_link}}</a></p>
+              <!-- How It Works -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td style="background-color:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;">
-                    <p style="margin:0;font-size:13px;color:#6b7280;line-height:1.5;">
-                      <strong style="color:#374151;">How it works:</strong> Click the link above to review your contract. You'll be able to read the full terms, then sign electronically using your finger or mouse. A signed copy will be emailed to you for your records.
-                    </p>
+                  <td style="background-color:#f0f4ff;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;padding:16px 20px;">
+                    <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#1a1a2e;">How it works:</p>
+                    <p style="margin:0;font-size:13px;color:#555555;line-height:1.6;">Click the link above to review your contract. You'll be able to read the full terms, then sign electronically using your finger or mouse. A signed copy will be emailed to you for your records.</p>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-          <!-- Divider -->
-          <tr><td style="padding:0 40px;"><hr style="border:none;border-top:1px solid #e5e7eb;margin:0;"></td></tr>
           <!-- Footer -->
           <tr>
-            <td style="padding:24px 40px 32px;text-align:center;">
-              <p style="margin:0 0 4px;font-size:13px;color:#6b7280;font-weight:600;">Big Bass Tree Services, LLC</p>
-              <p style="margin:0 0 2px;font-size:12px;color:#9ca3af;">1726 Lyman Lane, Clinton, LA 70722</p>
-              <p style="margin:0 0 8px;font-size:12px;color:#9ca3af;">(225) 892-8382 &bull; bigbasstrees@gmail.com</p>
-              <p style="margin:0;font-size:11px;color:#d1d5db;">This is an automated message. Please do not reply directly to this email.</p>
+            <td style="background-color:#1a1a2e;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 6px;font-size:14px;color:#ffffff;font-weight:700;">Big Bass Tree Service, LLC</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#aaaaaa;">1726 Lyman Lane, Clinton, LA 70722</p>
+              <p style="margin:0 0 12px;font-size:12px;color:#aaaaaa;">(225) 892-8382 &bull; bigbasstrees@gmail.com</p>
+              <p style="margin:0;font-size:11px;color:#666666;">This is an automated message. Please do not reply directly.</p>
             </td>
           </tr>
         </table>
@@ -187,69 +243,113 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:'Segoe UI',Roboto,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#e8e8e8;padding:32px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
-          <!-- Header -->
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.12);">
+          <!-- Logo Header -->
           <tr>
-            <td style="background:linear-gradient(135deg,#1a3a1a 0%,#2d5a2d 50%,#1a3a1a 100%);padding:32px 40px;text-align:center;">
-              <h1 style="margin:0;font-size:26px;font-weight:700;color:#ffffff;letter-spacing:0.5px;">Big Bass Tree Services</h1>
-              <p style="margin:8px 0 0;font-size:13px;color:#a8d5a8;letter-spacing:1px;text-transform:uppercase;">Website Inquiry</p>
+            <td style="background-color:#1a1a2e;padding:28px 40px 20px;text-align:center;">
+              <img src="https://www.bigbasstreeservice.com/images/logo.png" alt="Big Bass Tree Service" width="160" height="160" style="display:block;margin:0 auto;width:160px;height:auto;max-width:100%;">
             </td>
+          </tr>
+          <!-- Orange Accent Bar -->
+          <tr>
+            <td style="background:linear-gradient(90deg,#f59e0b 0%,#fbbf24 50%,#f59e0b 100%);height:5px;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
           <!-- Status Badge -->
           <tr>
-            <td align="center" style="padding:24px 40px 0;">
-              <span style="display:inline-block;background:#fef9c3;color:#854d0e;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;letter-spacing:0.3px;">&#9733; New Lead</span>
+            <td align="center" style="padding:28px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="background-color:#fef3c7;border:2px solid #f59e0b;border-radius:24px;padding:8px 22px;">
+                    <span style="font-size:14px;font-weight:700;color:#92400e;letter-spacing:0.5px;">&#9733; NEW LEAD</span>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <!-- Body -->
           <tr>
-            <td style="padding:24px 40px;">
-              <p style="margin:0 0 20px;font-size:16px;color:#374151;line-height:1.6;">A new inquiry was submitted from the website contact form:</p>
-              <!-- Contact Info Box -->
+            <td style="padding:24px 40px 28px;">
+              <p style="margin:0 0 24px;font-size:16px;color:#333333;line-height:1.7;">A new inquiry was submitted from the website contact form:</p>
+              <!-- Contact Info Card -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
                 <tr>
-                  <td style="background-color:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:16px 20px;">
+                  <td style="border-radius:10px;overflow:hidden;border:1px solid #e0e0e0;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;width:100px;">Name:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{from_name}}</td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Phone:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;"><a href="tel:{{from_phone}}" style="color:#1a3a1a;text-decoration:none;">{{from_phone}}</a></td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Email:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;"><a href="mailto:{{from_email}}" style="color:#2d5a2d;">{{from_email}}</a></td></tr>
-                      <tr><td style="padding:4px 0;font-size:14px;color:#6b7280;">Service:</td><td style="padding:4px 0;font-size:14px;color:#1a3a1a;font-weight:600;">{{service}}</td></tr>
+                      <tr>
+                        <td style="background-color:#1a1a2e;padding:10px 20px;">
+                          <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:1px;">Contact Information</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:16px 20px;background-color:#f8f9fa;">
+                          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;width:80px;vertical-align:top;">Name:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{from_name}}</td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Phone:</td>
+                              <td style="padding:6px 0;font-size:14px;font-weight:600;"><a href="tel:{{from_phone}}" style="color:#1a1a2e;text-decoration:none;">{{from_phone}}</a></td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Email:</td>
+                              <td style="padding:6px 0;font-size:14px;font-weight:600;"><a href="mailto:{{from_email}}" style="color:#2563eb;">{{from_email}}</a></td>
+                            </tr>
+                            <tr>
+                              <td style="padding:6px 0;font-size:13px;color:#777777;vertical-align:top;">Service:</td>
+                              <td style="padding:6px 0;font-size:14px;color:#1a1a2e;font-weight:600;">{{service}}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
                     </table>
                   </td>
                 </tr>
               </table>
               <!-- Message -->
-              <p style="margin:0 0 8px;font-size:13px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Message</p>
-              <div style="background-color:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:24px;">
-                <p style="margin:0;font-size:15px;color:#374151;line-height:1.6;white-space:pre-wrap;">{{message}}</p>
-              </div>
-              <!-- Reply Buttons -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                <tr>
+                  <td style="border-radius:10px;overflow:hidden;border:1px solid #e0e0e0;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background-color:#1a1a2e;padding:10px 20px;">
+                          <span style="font-size:12px;font-weight:700;color:#ffffff;text-transform:uppercase;letter-spacing:1px;">Message</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding:16px 20px;background-color:#f8f9fa;">
+                          <p style="margin:0;font-size:15px;color:#333333;line-height:1.7;white-space:pre-wrap;">{{message}}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+              <!-- Action Buttons -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="center" style="padding:8px 0;">
-                    <a href="tel:{{from_phone}}" style="display:inline-block;background:linear-gradient(135deg,#2d5a2d,#3a7a3a);color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;margin:0 6px;">
-                      Call Back
+                  <td align="center" style="padding:0 0 8px;">
+                    <a href="tel:{{from_phone}}" style="display:inline-block;background-color:#3bb54a;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 30px;border-radius:6px;margin:0 6px;">
+                      &#128222; Call Back
                     </a>
-                    <a href="mailto:{{from_email}}" style="display:inline-block;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;margin:0 6px;">
-                      Reply by Email
+                    <a href="mailto:{{from_email}}" style="display:inline-block;background-color:#2563eb;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:13px 30px;border-radius:6px;margin:0 6px;">
+                      &#9993; Reply by Email
                     </a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
-          <!-- Divider -->
-          <tr><td style="padding:0 40px;"><hr style="border:none;border-top:1px solid #e5e7eb;margin:0;"></td></tr>
           <!-- Footer -->
           <tr>
-            <td style="padding:24px 40px 32px;text-align:center;">
-              <p style="margin:0 0 4px;font-size:13px;color:#6b7280;font-weight:600;">Big Bass Tree Services, LLC</p>
-              <p style="margin:0 0 2px;font-size:12px;color:#9ca3af;">1726 Lyman Lane, Clinton, LA 70722</p>
-              <p style="margin:0;font-size:11px;color:#d1d5db;">This inquiry was submitted via the contact form at bigbasstreeservice.com</p>
+            <td style="background-color:#1a1a2e;padding:24px 40px;text-align:center;">
+              <p style="margin:0 0 6px;font-size:14px;color:#ffffff;font-weight:700;">Big Bass Tree Service, LLC</p>
+              <p style="margin:0 0 4px;font-size:12px;color:#aaaaaa;">1726 Lyman Lane, Clinton, LA 70722</p>
+              <p style="margin:0;font-size:11px;color:#666666;">Submitted via bigbasstreeservice.com contact form</p>
             </td>
           </tr>
         </table>
