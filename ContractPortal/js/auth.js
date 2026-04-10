@@ -22,9 +22,20 @@ function initFirebase() {
 
   // Listen for auth state changes
   auth.onAuthStateChanged((user) => {
-    currentUser = user;
-    updateAuthUI(user);
-    if (user) {
+    // Only treat email-authenticated users as admins.
+    // Anonymous users (from the signing page) must NOT access the portal.
+    const isAdmin = user && !user.isAnonymous && user.email;
+
+    if (user && user.isAnonymous) {
+      // Sign out anonymous users from the portal — they don't belong here
+      auth.signOut();
+      return;
+    }
+
+    currentUser = isAdmin ? user : null;
+    updateAuthUI(isAdmin ? user : null);
+
+    if (isAdmin) {
       loadAdminSettings();
       // Show main content once authenticated
       document.getElementById('portalAuthGate').style.display = 'none';
