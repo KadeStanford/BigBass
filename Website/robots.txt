@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /portal/
 
-Sitemap: https://www.bigbasstreeservice.com/sitemap.xml
+Sitemap: https://www.bigbasstrees.com/sitemap.xml
