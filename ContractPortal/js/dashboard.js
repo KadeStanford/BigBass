@@ -197,9 +197,11 @@ function renderContractTable() {
   tbody.innerHTML = pageItems.map(c => {
     const date = c.createdAt ? new Date(c.createdAt).toLocaleDateString() : "";
     const price = c.totalPrice ? `$${parseFloat(c.totalPrice).toFixed(2)}` : "—";
+    const isSigned = c.status === "signed";
+    const hasSignedPdf = c.signedPdfUrl && c.signedPdfUrl.length > 0;
 
     return `
-      <tr onclick="toggleContractDetail('${c.id}')">
+      <tr class="contract-row" data-contract-id="${c.id}">
         <td data-label="Customer">${escapeHtml(c.customerName || "Unknown")}</td>
         <td data-label="Type"><span class="type-badge type-${c.contractType || 'general'}">${c.contractType || "general"}</span></td>
         <td data-label="Status"><span class="status-badge status-${c.status || 'sent'}">${c.status || "sent"}</span></td>
@@ -207,9 +209,11 @@ function renderContractTable() {
         <td data-label="Total">${price}</td>
         <td data-label="Actions">
           <div class="dashboard-actions-cell">
-            ${c.pdfUrl ? `<a href="${escapeHtml(c.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">PDF</a>` : ""}
-            ${c.signingToken && c.status !== "signed" ? `<button class="btn-action-sm" onclick="event.stopPropagation();copyContractLink('${c.signingToken}')">Copy Link</button>` : ""}
+            ${hasSignedPdf ? `<a href="${escapeHtml(c.signedPdfUrl)}" target="_blank" class="btn-action-sm btn-action-primary" onclick="event.stopPropagation()">Download Signed</a>` : ""}
+            ${c.pdfUrl && !hasSignedPdf ? `<a href="${escapeHtml(c.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">View PDF</a>` : ""}
+            ${c.signingToken && !isSigned ? `<button class="btn-action-sm" onclick="event.stopPropagation();copyContractLink('${c.signingToken}')">Copy Link</button>` : ""}
             ${c.signingToken && c.status === "sent" ? `<button class="btn-action-sm" onclick="event.stopPropagation();resendContract('${c.id}')">Resend</button>` : ""}
+            <button class="btn-action-sm btn-expand-details" onclick="event.stopPropagation();toggleContractDetail('${c.id}')">Details</button>
           </div>
         </td>
       </tr>
@@ -443,7 +447,7 @@ function renderInvoiceTable() {
     const effectiveStatus = getInvoiceStatus(inv);
 
     return `
-      <tr onclick="toggleInvoiceDetail('${inv.id}')">
+      <tr class="invoice-row" data-invoice-id="${inv.id}">
         <td data-label="Customer">${escapeHtml(inv.customerName || "Unknown")}</td>
         <td data-label="Invoice #">${escapeHtml(inv.invoiceNumber || "")}</td>
         <td data-label="Date">${invDate}</td>
@@ -453,7 +457,8 @@ function renderInvoiceTable() {
         <td data-label="Actions">
           <div class="dashboard-actions-cell">
             <button class="btn-action-sm" onclick="event.stopPropagation();toggleInvoiceStatus('${inv.id}')">${inv.status === "paid" ? "Mark Unpaid" : "Mark Paid"}</button>
-            ${inv.pdfUrl ? `<a href="${escapeHtml(inv.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">PDF</a>` : ""}
+            ${inv.pdfUrl ? `<a href="${escapeHtml(inv.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">Download</a>` : ""}
+            <button class="btn-action-sm btn-expand-details" onclick="event.stopPropagation();toggleInvoiceDetail('${inv.id}')">Details</button>
           </div>
         </td>
       </tr>

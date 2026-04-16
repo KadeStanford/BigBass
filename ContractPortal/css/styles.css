@@ -3380,7 +3380,7 @@ body {
   color: #1B6B3A;
 }
 
-/* Dashboard responsive */
+/* Dashboard responsive - header and controls only */
 @media (max-width: 768px) {
   .dashboard-header {
     flex-direction: column;
@@ -3394,37 +3394,6 @@ body {
   .dashboard-search {
     width: 100%;
     min-width: unset;
-  }
-
-  .dashboard-table thead { display: none; }
-
-  .dashboard-table tbody tr {
-    display: block;
-    padding: 12px;
-    margin-bottom: 8px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-  }
-
-  .dashboard-table tbody td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: none;
-    font-size: 0.85rem;
-  }
-
-  .dashboard-table tbody td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #868e96;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-  }
-
-  .quick-detail-grid {
-    grid-template-columns: 1fr;
   }
 
   .nav-buttons {
@@ -3497,6 +3466,24 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Download Signed button - prominent styling */
+.btn-action-primary {
+  background: var(--green-700, #1B6B3A) !important;
+  color: #fff !important;
+  border-color: var(--green-700, #1B6B3A) !important;
+}
+
+.btn-action-primary:hover {
+  background: var(--green-900, #155d32) !important;
+  border-color: var(--green-900, #155d32) !important;
+}
+
+/* Details expand button */
+.btn-expand-details {
+  background: #f8f9fa;
+  color: #495057;
+}
+
 /* Show mobile nav only on small screens */
 @media (max-width: 600px) {
   .mobile-bottom-nav[style*="flex"],
@@ -3515,47 +3502,6 @@ body {
     padding-bottom: 90px;
   }
   
-  /* Improved mobile table styling */
-  .dashboard-table tbody td {
-    padding: 8px 0;
-    font-size: 0.82rem;
-    gap: 8px;
-  }
-  
-  .dashboard-table tbody td::before {
-    font-size: 0.68rem;
-    min-width: 70px;
-    flex-shrink: 0;
-  }
-  
-  .dashboard-table tbody tr {
-    padding: 14px;
-    margin-bottom: 12px;
-    background: #fff;
-  }
-  
-  /* Stack action buttons vertically on mobile */
-  .dashboard-actions-cell {
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
-  }
-  
-  .dashboard-actions-cell .btn-action-sm {
-    width: 100%;
-    text-align: center;
-    padding: 10px 12px;
-    font-size: 0.8rem;
-  }
-  
-  /* Ensure status badges don't overflow */
-  .status-badge,
-  .type-badge {
-    font-size: 0.72rem;
-    padding: 3px 8px;
-    white-space: nowrap;
-  }
-  
   /* Mobile dashboard controls */
   .dashboard-controls {
     flex-wrap: wrap;
@@ -3572,6 +3518,169 @@ body {
   }
 }
 
+/* ===== MOBILE CARD LAYOUT FOR TABLES ===== */
+@media (max-width: 768px) {
+  .dashboard-table thead { 
+    display: none; 
+  }
+
+  .dashboard-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dashboard-table tbody tr.contract-row,
+  .dashboard-table tbody tr.invoice-row {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    cursor: default;
+  }
+
+  .dashboard-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: none;
+    font-size: 0.9rem;
+  }
+
+  .dashboard-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+
+  /* Customer name should be prominent */
+  .dashboard-table tbody td[data-label="Customer"] {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #212529;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f3f5;
+    margin-bottom: 4px;
+  }
+
+  .dashboard-table tbody td[data-label="Customer"]::before {
+    display: none;
+  }
+
+  /* Hide some columns on mobile to reduce clutter */
+  .dashboard-table tbody td[data-label="Date"],
+  .dashboard-table tbody td[data-label="Created"] {
+    display: none;
+  }
+
+  /* Actions row should be full width at bottom */
+  .dashboard-table tbody td[data-label="Actions"] {
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 1px solid #f1f3f5;
+  }
+
+  .dashboard-table tbody td[data-label="Actions"]::before {
+    display: none;
+  }
+
+  /* Action buttons grid layout */
+  .dashboard-actions-cell {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .dashboard-actions-cell .btn-action-sm {
+    width: 100%;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  /* Primary download button spans full width */
+  .dashboard-actions-cell .btn-action-primary {
+    grid-column: 1 / -1;
+    padding: 12px 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Status badges */
+  .status-badge,
+  .type-badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+
+  /* Quick detail row on mobile */
+  .quick-detail-row {
+    display: none !important;
+  }
+
+  .quick-detail-row.open {
+    display: flex !important;
+    flex-direction: column;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0;
+    margin-top: -8px;
+    overflow: hidden;
+  }
+
+  .quick-detail-row.open td {
+    display: block;
+    padding: 0;
+  }
+
+  .quick-detail-row.open td::before {
+    display: none;
+  }
+
+  .quick-detail-cell {
+    padding: 16px;
+  }
+
+  .quick-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .quick-detail-grid .detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .quick-detail-grid .detail-item:last-child {
+    border-bottom: none;
+  }
+
+  .quick-detail-grid .detail-label {
+    font-size: 0.72rem;
+    margin-bottom: 0;
+  }
+
+  .quick-detail-grid .detail-value {
+    text-align: right;
+    font-size: 0.85rem;
+  }
+}
+
 /* Extra small screens */
 @media (max-width: 380px) {
   .mobile-nav-btn span {
@@ -3584,12 +3693,14 @@ body {
   }
   
   .dashboard-table tbody td {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    font-size: 0.85rem;
+  }
+
+  .dashboard-actions-cell {
+    grid-template-columns: 1fr;
   }
   
-  .dashboard-table tbody td::before {
-    margin-bottom: 2px;
+  .dashboard-actions-cell .btn-action-sm {
+    padding: 12px 8px;
   }
 }
