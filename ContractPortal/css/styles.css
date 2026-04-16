@@ -3445,3 +3445,151 @@ body {
     justify-content: center;
   }
 }
+
+/* ===== MOBILE BOTTOM NAVIGATION ===== */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #1a7a42 0%, #14532d 60%, #0f3d20 100%);
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.mobile-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 56px;
+}
+
+.mobile-nav-btn svg {
+  flex-shrink: 0;
+}
+
+.mobile-nav-btn span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.mobile-nav-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mobile-nav-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Show mobile nav only on small screens */
+@media (max-width: 600px) {
+  .mobile-bottom-nav[style*="flex"],
+  .mobile-bottom-nav.visible {
+    display: flex !important;
+  }
+  
+  /* Add bottom padding to main content when mobile nav is visible */
+  body:has(.mobile-bottom-nav[style*="flex"]) .main-content,
+  body:has(.mobile-bottom-nav.visible) .main-content {
+    padding-bottom: 90px;
+  }
+  
+  body:has(.mobile-bottom-nav[style*="flex"]) .dashboard-section,
+  body:has(.mobile-bottom-nav.visible) .dashboard-section {
+    padding-bottom: 90px;
+  }
+  
+  /* Improved mobile table styling */
+  .dashboard-table tbody td {
+    padding: 8px 0;
+    font-size: 0.82rem;
+    gap: 8px;
+  }
+  
+  .dashboard-table tbody td::before {
+    font-size: 0.68rem;
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+  
+  .dashboard-table tbody tr {
+    padding: 14px;
+    margin-bottom: 12px;
+    background: #fff;
+  }
+  
+  /* Stack action buttons vertically on mobile */
+  .dashboard-actions-cell {
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+  
+  .dashboard-actions-cell .btn-action-sm {
+    width: 100%;
+    text-align: center;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+  
+  /* Ensure status badges don't overflow */
+  .status-badge,
+  .type-badge {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  
+  /* Mobile dashboard controls */
+  .dashboard-controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .dashboard-filter {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .btn-refresh {
+    width: 100%;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+  .mobile-nav-btn span {
+    font-size: 0.65rem;
+  }
+  
+  .mobile-nav-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .dashboard-table tbody td {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .dashboard-table tbody td::before {
+    margin-bottom: 2px;
+  }
+}

@@ -1776,6 +1776,28 @@
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" id="mobileNav" style="display:none">
+      <button type="button" class="mobile-nav-btn active" onclick="showView('contract')" id="mobileNavNewContract">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        <span>New</span>
+      </button>
+      <button type="button" class="mobile-nav-btn" onclick="showView('contracts')" id="mobileNavContracts">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <span>Contracts</span>
+      </button>
+      <button type="button" class="mobile-nav-btn" onclick="showView('invoices')" id="mobileNavInvoices">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 14l2 2 4-4m5 1V7a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2h8"/>
+        </svg>
+        <span>Invoices</span>
+      </button>
+    </nav>
+
     <script src="js/firebase-config.js"></script>
     <script src="js/contracts.js"></script>
     <script src="js/auth.js"></script>

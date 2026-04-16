@@ -25,11 +25,17 @@ let currentView = "contract"; // "contract" | "contracts" | "invoices"
 function showView(view) {
   currentView = view;
 
-  // Update nav buttons
+  // Update nav buttons (desktop)
   document.querySelectorAll(".btn-nav").forEach(b => b.classList.remove("active"));
   const navMap = { contract: "navNewContract", contracts: "navContracts", invoices: "navInvoices" };
   const activeBtn = document.getElementById(navMap[view]);
   if (activeBtn) activeBtn.classList.add("active");
+
+  // Update mobile nav buttons
+  document.querySelectorAll(".mobile-nav-btn").forEach(b => b.classList.remove("active"));
+  const mobileNavMap = { contract: "mobileNavNewContract", contracts: "mobileNavContracts", invoices: "mobileNavInvoices" };
+  const activeMobileBtn = document.getElementById(mobileNavMap[view]);
+  if (activeMobileBtn) activeMobileBtn.classList.add("active");
 
   // Hide all views
   const mainContent = document.querySelector(".main-content");
@@ -520,9 +526,17 @@ async function toggleInvoiceStatus(id) {
 function showDashboardNav() {
   const nav = document.getElementById("dashboardNav");
   if (nav) nav.style.display = "flex";
+  
+  // Also show mobile bottom nav
+  const mobileNav = document.getElementById("mobileNav");
+  if (mobileNav) mobileNav.style.display = "flex";
 }
 
 function hideDashboardNav() {
   const nav = document.getElementById("dashboardNav");
   if (nav) nav.style.display = "none";
+  
+  // Also hide mobile bottom nav
+  const mobileNav = document.getElementById("mobileNav");
+  if (mobileNav) mobileNav.style.display = "none";
 }
