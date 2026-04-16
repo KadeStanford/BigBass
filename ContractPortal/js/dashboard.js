@@ -198,6 +198,7 @@ function renderContractTable() {
     const date = c.createdAt ? new Date(c.createdAt).toLocaleDateString() : "";
     const price = c.totalPrice ? `$${parseFloat(c.totalPrice).toFixed(2)}` : "—";
     const isSigned = c.status === "signed";
+    const hasSignatureData = c.signatureData && (c.signatureData.signature || c.signatureData.initials);
     const hasSignedPdf = c.signedPdfUrl && c.signedPdfUrl.length > 0;
 
     return `
@@ -209,8 +210,9 @@ function renderContractTable() {
         <td data-label="Total">${price}</td>
         <td data-label="Actions">
           <div class="dashboard-actions-cell">
-            ${hasSignedPdf ? `<a href="${escapeHtml(c.signedPdfUrl)}" target="_blank" class="btn-action-sm btn-action-primary" onclick="event.stopPropagation()">Download Signed</a>` : ""}
-            ${c.pdfUrl && !hasSignedPdf ? `<a href="${escapeHtml(c.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">View PDF</a>` : ""}
+            ${isSigned && hasSignatureData ? `<button class="btn-action-sm btn-action-primary" onclick="event.stopPropagation();downloadSignedContract('${c.id}')">Download Signed</button>` : ""}
+            ${hasSignedPdf && !hasSignatureData ? `<a href="${escapeHtml(c.signedPdfUrl)}" target="_blank" class="btn-action-sm btn-action-primary" onclick="event.stopPropagation()">Download Signed</a>` : ""}
+            ${c.pdfUrl && !isSigned ? `<a href="${escapeHtml(c.pdfUrl)}" target="_blank" class="btn-action-sm" onclick="event.stopPropagation()">View PDF</a>` : ""}
             ${c.signingToken && !isSigned ? `<button class="btn-action-sm" onclick="event.stopPropagation();copyContractLink('${c.signingToken}')">Copy Link</button>` : ""}
             ${c.signingToken && c.status === "sent" ? `<button class="btn-action-sm" onclick="event.stopPropagation();resendContract('${c.id}')">Resend</button>` : ""}
             <button class="btn-action-sm btn-expand-details" onclick="event.stopPropagation();toggleContractDetail('${c.id}')">Details</button>
@@ -544,4 +546,263 @@ function hideDashboardNav() {
   // Also hide mobile bottom nav
   const mobileNav = document.getElementById("mobileNav");
   if (mobileNav) mobileNav.style.display = "none";
+}
+
+// ===== DOWNLOAD SIGNED CONTRACT PDF =====
+async function downloadSignedContract(contractId) {
+  const contract = allContracts.find(c => c.id === contractId);
+  if (!contract) {
+    showToast("Contract not found.", "error");
+    return;
+  }
+
+  if (!contract.signatureData) {
+    showToast("No signature data available.", "error");
+    return;
+  }
+
+  // Show loading state
+  showToast("Generating PDF...", "info");
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "letter");
+
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 18;
+    const cw = pageW - margin * 2;
+    let y = margin;
+
+    // --- Helpers ---
+    function checkPage(needed) {
+      if (y + needed > pageH - margin) {
+        pdf.addPage();
+        y = margin;
+      }
+    }
+
+    function addText(text, fontSize, isBold, color) {
+      pdf.setFontSize(fontSize || 10);
+      pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      if (color) pdf.setTextColor(color[0], color[1], color[2]);
+      else pdf.setTextColor(33, 37, 41);
+      const lines = pdf.splitTextToSize(text, cw);
+      const lh = (fontSize || 10) * 0.42;
+      for (let i = 0; i < lines.length; i++) {
+        checkPage(lh + 1);
+        pdf.text(lines[i], margin, y);
+        y += lh;
+      }
+    }
+
+    function addCenteredText(text, fontSize, isBold, color) {
+      pdf.setFontSize(fontSize || 10);
+      pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      if (color) pdf.setTextColor(color[0], color[1], color[2]);
+      else pdf.setTextColor(33, 37, 41);
+      checkPage(fontSize * 0.5);
+      pdf.text(text, pageW / 2, y, { align: "center" });
+      y += (fontSize || 10) * 0.42;
+    }
+
+    function addSpacer(mm) { y += mm; }
+
+    function addLine() {
+      checkPage(4);
+      pdf.setDrawColor(27, 107, 58);
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, y, pageW - margin, y);
+      y += 3;
+    }
+
+    function addField(label, value) {
+      checkPage(8);
+      pdf.setFontSize(9);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(73, 80, 87);
+      pdf.text(label, margin, y);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(33, 37, 41);
+      pdf.text(String(value || "N/A"), margin + 52, y);
+      y += 5;
+    }
+
+    // --- Header ---
+    addCenteredText("SERVICES CONTRACT", 16, true, [27, 107, 58]);
+    addSpacer(2);
+    addCenteredText("SIGNED COPY", 10, false, [27, 107, 58]);
+    addSpacer(2);
+    addLine();
+    addSpacer(1);
+    addCenteredText("Big Bass Tree Services, LLC", 11, true);
+    addCenteredText("1726 Lyman Lane, Clinton, LA 70722", 9, false, [108, 117, 125]);
+    addSpacer(6);
+
+    // --- Customer Info ---
+    addText("CUSTOMER INFORMATION", 10, true, [27, 107, 58]);
+    addSpacer(2);
+    addField("Customer Name:", contract.customerName);
+    addField("Phone:", contract.customerPhone);
+    addField("Address:", contract.customerAddress);
+    addField("Email:", contract.customerEmail);
+    addField("Location of Services:", contract.locationOfServices);
+    addField("Estimated Timeframe:", contract.estimatedTimeframe);
+    
+    // Insurance fields if applicable
+    if (contract.contractType === "insurance") {
+      addField("Date of Loss:", contract.dateOfLoss);
+      addField("Cause of Loss:", contract.causeOfLoss);
+      addField("Insurance Carrier:", contract.insuranceCarrier);
+      addField("Policy Number:", contract.policyNumber);
+      addField("Claim Number:", contract.claimNumber);
+      addField("Adjuster Name:", contract.adjusterName);
+      addField("Adjuster Phone:", contract.adjusterPhone);
+      addField("Adjuster Email:", contract.adjusterEmail);
+    }
+
+    if (contract.scopeOfServices) addField("Scope of Services:", contract.scopeOfServices);
+    if (contract.additionalServices) addField("Additional Services:", contract.additionalServices);
+    if (contract.totalPrice) addField("Total Price:", "$" + parseFloat(contract.totalPrice).toFixed(2));
+
+    addSpacer(6);
+    addLine();
+    addSpacer(3);
+
+    // --- Legal Sections ---
+    if (typeof LEGAL_SECTIONS !== "undefined") {
+      const legalKeys = [
+        ["SCOPE OF THE WORK, TERMS AND PAYMENT", "scopeTerms"],
+        ["LIEN", "lien"],
+        ["DELIVERY OF THE PROPERTY", "deliveryOfProperty"],
+        ["PERMITS", "permits"],
+        ["PROPERTY LINES AND RESTRICTIONS", "propertyLines"],
+        ["INHERENT HAZARDS AND RISKS", "inherentHazards"],
+        ["EXPENSES FOR UNUSUAL OR UNANTICIPATED CONDITIONS", "unusualExpenses"],
+        ["PERFORMANCE OF THE WORK", "performanceOfWork"],
+        ["TARPS", "tarps"],
+        ["NO LIABILITY", "noLiability"],
+        ["ACT OF GOD", "actOfGod"],
+        ["INDEMNIFICATION", "indemnification"],
+        ["LIMITATION OF RECOVERY", "limitationOfRecovery"],
+        ["ELECTRONIC COMMUNICATIONS", "electronicComms"],
+        ["SEVERABILITY AND INTERPRETATION", "severability"],
+        ["AUTHORITY AND CONSENT", "authority"]
+      ];
+
+      for (const [title, key] of legalKeys) {
+        if (!LEGAL_SECTIONS[key]) continue;
+        addSpacer(2);
+        addText(title, 9, true, [27, 107, 58]);
+        addSpacer(1);
+        const raw = (LEGAL_SECTIONS[key] || "").replace(/<[^>]*>/g, "").trim();
+        const cleanText = raw.replace(/^[A-Z\s,&:]+:\s*/, "");
+        addText(cleanText, 8.5, false);
+        addSpacer(3);
+      }
+    }
+
+    // --- Rate Schedule ---
+    if (contract.rates && contract.rates.length) {
+      const selected = contract.rates.filter(r => r.selected);
+      if (selected.length) {
+        addSpacer(4);
+        addLine();
+        addSpacer(2);
+        addText("RATE SCHEDULE", 11, true, [27, 107, 58]);
+        addSpacer(1);
+        addText("All rates are an eight (8) hour minimum as is customary in the industry.", 8.5, false, [108, 117, 125]);
+        addSpacer(4);
+
+        // Table header
+        checkPage(10);
+        pdf.setFillColor(27, 107, 58);
+        pdf.rect(margin, y - 1, cw, 7, "F");
+        pdf.setFontSize(8.5);
+        pdf.setFont("helvetica", "bold");
+        pdf.setTextColor(255, 255, 255);
+        pdf.text("#", margin + 2, y + 3.5);
+        pdf.text("Item / Service", margin + 14, y + 3.5);
+        pdf.text("Price", pageW - margin - 2, y + 3.5, { align: "right" });
+        y += 8;
+
+        let total = 0;
+        pdf.setFont("helvetica", "normal");
+        pdf.setTextColor(33, 37, 41);
+        for (const r of selected) {
+          const price = parseFloat(r.price) || 0;
+          total += price;
+          checkPage(7);
+          pdf.setFontSize(8.5);
+          pdf.text(String(r.id) + ".", margin + 2, y);
+          const qtyText = r.qty ? ` (${r.qty} people)` : "";
+          const nameLines = pdf.splitTextToSize((r.name || "Item") + qtyText, cw - 50);
+          for (let i = 0; i < nameLines.length; i++) {
+            pdf.text(nameLines[i], margin + 14, y + (i * 4));
+          }
+          pdf.text("$" + price.toFixed(2), pageW - margin - 2, y, { align: "right" });
+          y += Math.max(nameLines.length * 4, 5) + 2;
+          pdf.setDrawColor(220, 220, 220);
+          pdf.setLineWidth(0.2);
+          pdf.line(margin, y - 1, pageW - margin, y - 1);
+        }
+        // Total row
+        checkPage(10);
+        pdf.setFillColor(240, 247, 242);
+        pdf.rect(margin, y, cw, 7, "F");
+        pdf.setFont("helvetica", "bold");
+        pdf.setTextColor(27, 107, 58);
+        pdf.text("TOTAL", margin + 14, y + 4.5);
+        pdf.text("$" + total.toFixed(2), pageW - margin - 2, y + 4.5, { align: "right" });
+        y += 10;
+      }
+    }
+
+    // --- Signature area ---
+    addSpacer(6);
+    addLine();
+    addSpacer(4);
+    addText("ELECTRONIC SIGNATURE", 11, true, [27, 107, 58]);
+    addSpacer(2);
+    addText("This contract was electronically signed.", 9, false);
+    
+    const signDate = contract.signatureData.signatureDate || 
+                     (contract.signedAt ? new Date(contract.signedAt).toLocaleDateString() : "");
+    addField("Date Signed:", signDate);
+    addSpacer(4);
+
+    // Embed signature images
+    try {
+      if (contract.signatureData.initials) {
+        addText("Initials:", 9, true);
+        addSpacer(1);
+        checkPage(18);
+        pdf.addImage(contract.signatureData.initials, "PNG", margin, y, 40, 15);
+        y += 18;
+      }
+    } catch (e) { console.warn("Failed to add initials:", e); }
+
+    try {
+      if (contract.signatureData.signature) {
+        addText("Signature:", 9, true);
+        addSpacer(1);
+        checkPage(24);
+        pdf.addImage(contract.signatureData.signature, "PNG", margin, y, 60, 20);
+        y += 24;
+      }
+    } catch (e) { console.warn("Failed to add signature:", e); }
+
+    // --- Footer ---
+    addSpacer(8);
+    addCenteredText("Big Bass Tree Services, LLC — Thank you for your business.", 8, false, [108, 117, 125]);
+
+    // Save the PDF
+    const safeName = (contract.customerName || "customer").replace(/[^a-zA-Z0-9]/g, "_");
+    pdf.save(`BigBass_SignedContract_${safeName}.pdf`);
+    showToast("PDF downloaded successfully!", "success");
+
+  } catch (e) {
+    console.error("PDF generation failed:", e);
+    showToast("Failed to generate PDF. Please try again.", "error");
+  }
 }
