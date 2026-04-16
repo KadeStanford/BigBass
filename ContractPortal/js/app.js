@@ -119,9 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore auto-saved data if available
   restoreAutosave();
 
-  // Set up auto-save on any form input change
-  document.addEventListener("input", scheduleAutosave);
-  document.addEventListener("change", scheduleAutosave);
+  // Set up auto-save on contract form input changes only
+  const customerForm = document.getElementById("customerForm");
+  const rateSchedule = document.getElementById("rateSchedule");
+  if (customerForm) {
+    customerForm.addEventListener("input", scheduleAutosave);
+    customerForm.addEventListener("change", scheduleAutosave);
+  }
+  if (rateSchedule) {
+    rateSchedule.addEventListener("input", scheduleAutosave);
+    rateSchedule.addEventListener("change", scheduleAutosave);
+  }
 });
 
 // ===== NAVIGATION =====
@@ -1342,17 +1350,37 @@ function startOver() {
 
 // ===== AUTO-SAVE =====
 function scheduleAutosave() {
+  // Only autosave if we're actively in the contract creation flow
+  const mainContent = document.querySelector(".main-content");
+  if (!mainContent || mainContent.style.display === "none") {
+    return; // Don't autosave when viewing dashboards
+  }
+  
+  // Only autosave if a contract type has been selected
+  if (!selectedContractType) {
+    return;
+  }
+  
   clearTimeout(autosaveTimer);
   autosaveTimer = setTimeout(saveToLocalStorage, 800);
 }
 
 function saveToLocalStorage() {
+  // Don't save if no contract type selected
+  if (!selectedContractType) return;
+  
   const formFields = {};
   const form = document.getElementById("customerForm");
   if (form) {
     form.querySelectorAll("input, select, textarea").forEach((el) => {
       if (el.id) formFields[el.id] = el.value;
     });
+  }
+  
+  // Check if there's any meaningful data to save (at least customer name)
+  const customerName = formFields.customerName || "";
+  if (!customerName.trim()) {
+    return; // Don't save empty forms
   }
 
   // Save rate selections
@@ -1393,6 +1421,13 @@ function restoreAutosave() {
     sessionStorage.removeItem(AUTOSAVE_KEY);
     return;
   }
+  
+  // Only restore if there's meaningful data (contract type AND customer name)
+  const customerName = saved.formFields?.customerName || "";
+  if (!saved.contractType || !customerName.trim()) {
+    sessionStorage.removeItem(AUTOSAVE_KEY);
+    return;
+  }
 
   // Show the restore prompt overlay
   const overlay = document.getElementById("restorePromptOverlay");
@@ -1404,7 +1439,7 @@ function restoreAutosave() {
   const timeStr = savedDate.toLocaleString();
 
   document.getElementById("restorePromptDetails").textContent =
-    `${typeName} contract — last saved ${timeStr}`;
+    `${typeName} contract for ${customerName} — last saved ${timeStr}`;
 
   overlay.classList.add("active");
 
