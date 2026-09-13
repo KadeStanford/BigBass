@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>Big Bass | Sample video</title>
+  <link rel="icon" href="/images/favicon.ico">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #081b31; color: #f8f5eb; font: 16px/1.5 system-ui, sans-serif; }
+    main { width: min(100% - 32px, 640px); margin: 24px auto; }
+    header { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+    header img { width: 80px; height: 80px; object-fit: contain; }
+    h1 { font-size: clamp(24px, 5vw, 32px); line-height: 1.2; margin: 0; }
+    header p { margin: 4px 0 0; color: #c4cdd5; }
+    video { display: block; width: 100%; max-height: 74vh; aspect-ratio: 9 / 16; background: #000; border-radius: 10px; }
+    .download { display: inline-block; margin-top: 18px; color: #b1ef51; text-underline-offset: 4px; }
+    a:focus-visible { outline: 3px solid #b1ef51; outline-offset: 5px; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img src="/images/logo.png" alt="Big Bass Tree Service">
+      <div><h1>Sample video</h1><p>Big Bass Tree Service</p></div>
+    </header>
+    <video controls playsinline preload="metadata" poster="poster.jpg" aria-label="Big Bass sample Facebook video ad">
+      <source src="sample.mp4" type="video/mp4">
+      Your browser cannot play this video. Use the download link below.
+    </video>
+    <a class="download" href="sample.mp4" download="Big-Bass-Sample-Ad.mp4">Download the video</a>
+  </main>
+</body>
+</html>

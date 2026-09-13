@@ -1,0 +1,9 @@
+customHeaders:
+  - pattern: '/preview/bb-7c84e2a9f63b4d10/**'
+    headers:
+      - key: 'X-Robots-Tag'
+        value: 'noindex, nofollow, noarchive'
+      - key: 'Cache-Control'
+        value: 'public, max-age=300'
+      - key: 'Referrer-Policy'
+        value: 'no-referrer'
